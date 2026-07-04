@@ -8,7 +8,25 @@ import { signOut, updateProfile } from "@/features/profiles/actions";
 import { ageFrom, localDate, type Avatar, type Profile } from "@/features/profiles/types";
 import { PlayerAvatar } from "@/features/avatars/PlayerAvatar";
 
-export function ProfileEditor({ profile, avatar }: { profile: Profile; avatar: Avatar | null }) {
+export interface HistoryEntry {
+  id: string;
+  rivalName: string;
+  myScore: number;
+  rivalScore: number;
+  result: "won" | "lost" | "draw";
+}
+
+export function ProfileEditor({
+  profile,
+  avatar,
+  stats,
+  history,
+}: {
+  profile: Profile;
+  avatar: Avatar | null;
+  stats: { played: number; won: number } | null;
+  history: HistoryEntry[];
+}) {
   const [phrases, setPhrases] = useState(profile.iconic_phrases);
   const [newPhrase, setNewPhrase] = useState("");
   const [isPublic, setIsPublic] = useState(profile.is_public);
@@ -164,11 +182,50 @@ export function ProfileEditor({ profile, avatar }: { profile: Profile; avatar: A
       </section>
 
       <section className="rounded-md border border-chalk/15 p-4">
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-chalk/50">Stats</h2>
-        <p className="text-sm text-chalk/40">
-          Tus partidas online, victorias y winrate aparecen acá cuando juegues online (próximamente).
-        </p>
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-chalk/50">
+          Stats · Penales
+        </h2>
+        {stats ? (
+          <div className="grid grid-cols-3 text-center">
+            <div>
+              <p className="font-display text-3xl text-chalk">{stats.played}</p>
+              <p className="text-xs text-chalk/40">jugadas</p>
+            </div>
+            <div>
+              <p className="font-display text-3xl text-chalk">{stats.won}</p>
+              <p className="text-xs text-chalk/40">ganadas</p>
+            </div>
+            <div>
+              <p className="font-display text-3xl text-chalk">
+                {Math.round((stats.won / Math.max(stats.played, 1)) * 100)}%
+              </p>
+              <p className="text-xs text-chalk/40">winrate</p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm text-chalk/40">Todavía no jugaste partidas online. Retá a alguien.</p>
+        )}
       </section>
+
+      {history.length > 0 && (
+        <section className="rounded-md border border-chalk/15 p-4">
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-chalk/50">
+            Últimas partidas
+          </h2>
+          <ul className="flex flex-col gap-2">
+            {history.map((h) => (
+              <li key={h.id} className="flex items-center justify-between text-sm">
+                <span className="text-chalk/80">
+                  {h.result === "won" ? "🏆" : h.result === "lost" ? "❌" : "🤝"} vs {h.rivalName}
+                </span>
+                <span className="font-display text-lg text-chalk">
+                  {h.myScore} – {h.rivalScore}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {error && <p className="text-center text-sm text-albirroja">{error}</p>}
     </main>

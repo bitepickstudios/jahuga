@@ -11,8 +11,8 @@ Decisiones que el agente **no debe asumir**. Cuando una fase las necesite, se re
 ## D2 — Valores iniciales de la economía
 Bono de bienvenida, recompensas de streak/misiones, precios de skins, límite diario de transferencia. Propuesta inicial a validar: bienvenida 10.000 · victoria de misión diaria 1.000–3.000 · skins 25.000–100.000 · transferencia máx. 20.000/día. Definir antes de F5.
 
-## D3 — Revelación en modo en vivo
-¿El server resuelve ronda por ronda (revela al cerrar cada penal) o resuelve todo al final y el cliente "dosifica" la revelación? Ronda por ronda es más honesto para el modo en vivo pero complica el estado; resolución diferida simplifica pero exige que en vivo ambos commiteen todo antes de ver nada. **Impacta F3; decidir al diseñar la Edge Function.**
+## D3 — Revelación en modo en vivo ✅ RESUELTA
+**Decisión 2026-07-03: la revelación ES la RLS.** Los movimientos del rival en la ronda N se vuelven visibles cuando ambos jugadores commitearon la ronda N (función `security definer` en la policy de `match_moves`), o todos al estar la partida `resolved`. El server resuelve el resultado tras cada commit (Server Action con service role, motor determinístico). Mismo mecanismo sirve para vivo y async sin estado extra de "ronda revelada"; Realtime notifica cuando la fila del rival se vuelve visible. La autoridad siempre es el servidor.
 
 ## D4 — Nickname: ¿editable? ✅ RESUELTA
 **Decisión 2026-07-03: NO editable en v1.** El nickname queda fijo al registrarse. Cero riesgo de romper la búsqueda social; editabilidad (con cooldown) se agrega después si duele. Ver registro abajo.

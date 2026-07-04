@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAvatar, getProfileByNickname } from "@/features/profiles/queries";
+import { getProfileStats } from "@/features/matches/queries";
 import { ageFrom, localDate } from "@/features/profiles/types";
 import { PlayerAvatar } from "@/features/avatars/PlayerAvatar";
 
@@ -27,7 +28,8 @@ export default async function PublicProfilePage({
     );
   }
 
-  const avatar = await getAvatar(profile.id);
+  const [avatar, stats] = await Promise.all([getAvatar(profile.id), getProfileStats(profile.id)]);
+  const penales = stats.find((s) => s.game_id === "penales") ?? null;
   const age = ageFrom(profile.birth_date);
   const birthday = profile.birth_date
     ? localDate(profile.birth_date).toLocaleDateString("es-PY", { day: "numeric", month: "long" })
@@ -67,8 +69,29 @@ export default async function PublicProfilePage({
       )}
 
       <section className="rounded-md border border-chalk/15 p-4">
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-chalk/50">Stats</h2>
-        <p className="text-sm text-chalk/40">Las stats de partidas online llegan con el modo online.</p>
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-chalk/50">
+          Stats · Penales
+        </h2>
+        {penales ? (
+          <div className="grid grid-cols-3 text-center">
+            <div>
+              <p className="font-display text-3xl text-chalk">{penales.played}</p>
+              <p className="text-xs text-chalk/40">jugadas</p>
+            </div>
+            <div>
+              <p className="font-display text-3xl text-chalk">{penales.won}</p>
+              <p className="text-xs text-chalk/40">ganadas</p>
+            </div>
+            <div>
+              <p className="font-display text-3xl text-chalk">
+                {Math.round((penales.won / Math.max(penales.played, 1)) * 100)}%
+              </p>
+              <p className="text-xs text-chalk/40">winrate</p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm text-chalk/40">Todavía sin partidas online.</p>
+        )}
       </section>
     </main>
   );
