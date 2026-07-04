@@ -33,7 +33,9 @@ Scaffolding del proyecto y del harness. Sin features.
 
 ---
 
-## Fase 2 — Cuentas y perfiles `[ ]`
+## Fase 2 — Cuentas y perfiles `[x]`
+
+> 2026-07-03: auth + onboarding + perfiles + avatar 2D + RLS verificada (integration tests 6/6 y E2E con browser). Queda para el usuario: 3 amigos reales creando cuenta desde el celular.
 
 - Registro (nickname único, email, contraseña validada) con Supabase Auth. Wizard de onboarding (nombre, fecha de nacimiento, foto).
 - Perfil: foto, datos, frases icónicas, toggle público/privado, stats placeholder.

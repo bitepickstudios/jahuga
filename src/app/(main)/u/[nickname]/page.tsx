@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAvatar, getProfileByNickname } from "@/features/profiles/queries";
-import { ageFrom } from "@/features/profiles/types";
+import { ageFrom, localDate } from "@/features/profiles/types";
 import { PlayerAvatar } from "@/features/avatars/PlayerAvatar";
 
 export const metadata: Metadata = { title: "Perfil — Lobby" };
@@ -30,7 +30,7 @@ export default async function PublicProfilePage({
   const avatar = await getAvatar(profile.id);
   const age = ageFrom(profile.birth_date);
   const birthday = profile.birth_date
-    ? new Date(profile.birth_date).toLocaleDateString("es-PY", { day: "numeric", month: "long" })
+    ? localDate(profile.birth_date).toLocaleDateString("es-PY", { day: "numeric", month: "long" })
     : null;
 
   return (

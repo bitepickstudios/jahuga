@@ -21,9 +21,14 @@ export interface Avatar {
   equipped: Record<string, string | null>;
 }
 
+/** Parsea una fecha date-only como medianoche LOCAL (evita el corrimiento de día por UTC). */
+export function localDate(dateOnly: string): Date {
+  return new Date(`${dateOnly}T00:00:00`);
+}
+
 export function ageFrom(birthDate: string | null): number | null {
   if (!birthDate) return null;
-  const birth = new Date(birthDate);
+  const birth = localDate(birthDate);
   const now = new Date();
   let age = now.getFullYear() - birth.getFullYear();
   const beforeBirthday =

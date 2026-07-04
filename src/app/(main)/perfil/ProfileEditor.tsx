@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button, Switch } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { createClient } from "@/lib/supabase/client";
 import { signOut, updateProfile } from "@/features/profiles/actions";
-import { ageFrom, type Avatar, type Profile } from "@/features/profiles/types";
+import { ageFrom, localDate, type Avatar, type Profile } from "@/features/profiles/types";
 import { PlayerAvatar } from "@/features/avatars/PlayerAvatar";
 
 export function ProfileEditor({ profile, avatar }: { profile: Profile; avatar: Avatar | null }) {
@@ -18,7 +18,7 @@ export function ProfileEditor({ profile, avatar }: { profile: Profile; avatar: A
 
   const age = ageFrom(profile.birth_date);
   const birthday = profile.birth_date
-    ? new Date(profile.birth_date).toLocaleDateString("es-PY", { day: "numeric", month: "long" })
+    ? localDate(profile.birth_date).toLocaleDateString("es-PY", { day: "numeric", month: "long" })
     : null;
 
   async function run(patch: Parameters<typeof updateProfile>[0]) {
@@ -143,7 +143,24 @@ export function ProfileEditor({ profile, avatar }: { profile: Profile; avatar: A
             {isPublic ? "Cualquiera puede ver tu perfil." : "Solo tus amigos pueden verte."}
           </p>
         </div>
-        <Switch isSelected={isPublic} onChange={togglePublic} isDisabled={busy} aria-label="Perfil público" />
+        {/* ponytail: toggle nativo — el Switch de HeroUI v3 renderizaba un div sin role */}
+        <button
+          type="button"
+          role="switch"
+          aria-checked={isPublic}
+          aria-label="Perfil público"
+          disabled={busy}
+          onClick={() => togglePublic(!isPublic)}
+          className={`relative h-8 w-14 shrink-0 rounded-full transition-colors ${
+            isPublic ? "bg-albirroja" : "bg-chalk/20"
+          }`}
+        >
+          <span
+            className={`absolute top-1 size-6 rounded-full bg-chalk transition-all ${
+              isPublic ? "left-7" : "left-1"
+            }`}
+          />
+        </button>
       </section>
 
       <section className="rounded-md border border-chalk/15 p-4">
