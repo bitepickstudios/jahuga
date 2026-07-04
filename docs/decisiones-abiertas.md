@@ -14,8 +14,8 @@ Bono de bienvenida, recompensas de streak/misiones, precios de skins, límite di
 ## D3 — Revelación en modo en vivo
 ¿El server resuelve ronda por ronda (revela al cerrar cada penal) o resuelve todo al final y el cliente "dosifica" la revelación? Ronda por ronda es más honesto para el modo en vivo pero complica el estado; resolución diferida simplifica pero exige que en vivo ambos commiteen todo antes de ver nada. **Impacta F3; decidir al diseñar la Edge Function.**
 
-## D4 — Nickname: ¿editable?
-Cambiar nickname rompe la búsqueda social ("¿quién era @tal?"). Propuesta: editable 1 vez cada 90 días, historial visible para amigos. Definir en F2.
+## D4 — Nickname: ¿editable? ✅ RESUELTA
+**Decisión 2026-07-03: NO editable en v1.** El nickname queda fijo al registrarse. Cero riesgo de romper la búsqueda social; editabilidad (con cooldown) se agrega después si duele. Ver registro abajo.
 
 ## D5 — Menores en la plataforma
 Si algún amigo del grupo (o futuro usuario) es menor de edad, ¿hay restricciones? Aunque las coins no sean dinero, la mecánica de apuesta es sensible. Mínimo: edad requerida en registro y términos claros de "moneda sin valor real". Definir antes de abrir más allá del grupo fundador.
@@ -38,3 +38,4 @@ Candidatos: trivia por tiempo (valida Realtime competitivo), boxeo por combinaci
 | 2026-07 | Primer minijuego: penales (reemplaza al boxeo como primero). | Comprensión universal, misma simplicidad técnica de decisión simultánea. |
 | 2026-07 | Supabase Realtime, sin servidor de juego dedicado. | Juegos por eventos/turnos; Colyseus recién si hay tiempo real continuo. |
 | 2026-07-03 | Proyecto Supabase diferido a Fase 2 (en Fase 0 solo SDK + clients placeholder). | La Fase 1 no usa base de datos; crear el proyecto hoy es fricción sin validación. |
+| 2026-07-03 | D4: nickname no editable en v1. | Simplicidad y búsqueda social estable; editabilidad con cooldown solo si duele. |

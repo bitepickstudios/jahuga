@@ -19,9 +19,9 @@ Scaffolding del proyecto y del harness. Sin features.
 
 ---
 
-## Fase 1 — Motor de penales jugable (prototipo) `[~]`
+## Fase 1 — Motor de penales jugable (prototipo) `[x]`
 
-> 2026-07-03: engine + tests + UI implementados y desplegados. Falta la verificación funcional (dos personas reales juegan y quieren la revancha) para cerrar.
+> 2026-07-03: engine + tests + UI implementados, desplegados y validados por el fundador. Cerrada.
 
 **La fase más importante.** Validar que el juego es divertido antes de construir todo lo demás. Sin login, sin base de datos: dos jugadores en el mismo dispositivo ("pasá el teléfono") + vs bot aleatorio.
 
