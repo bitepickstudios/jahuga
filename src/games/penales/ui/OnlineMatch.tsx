@@ -217,7 +217,11 @@ export function OnlineMatch({
         kick={shooterMove.move.kick}
         save={keeperMove.move.save}
         result={revealed[round - 1].results[shooterId]}
-        onDone={() => setRevealPointer(pointer + 1)}
+        onDone={() => {
+          setRevealPointer(pointer + 1);
+          // Última revelación: refresh inmediato para no esperar el poll del resultado
+          if (pointer + 1 >= totalRevealedPenalties) void refresh();
+        }}
       />
     );
   } else if (match.status === "resolved") {

@@ -64,7 +64,7 @@ Conectar el motor de la Fase 1 a la plataforma. Solo modo amistoso.
 
 ## Fase 4 — Amigos y grupos `[~]`
 
-> 2026-07-04: código completo (solicitudes, link de invitación con cookie, grupos con stats). Bloqueada para cerrar: un auto-fix de RLS del dashboard (función ajena `rls_auto_enable`) pisó las policies de groups/group_members — repair en `supabase/migrations/20260704000004_fix_groups_rls.sql`, cerrar al aplicarla (integration tests + E2E).
+> 2026-07-05: **amigos verificado E2E** (solicitud por nickname → aceptar → lista, link de invitación crea la solicitud, retar desde la lista con prefill). **Grupos sigue bloqueado** por el event trigger ajeno `rls_auto_enable` (se re-aplica con cada DDL; los repairs v1/v2 no lo sobrevivieron o se revirtieron). Pendiente: aplicar `20260705000008_repair_v3.sql` (best-effort con diagnóstico embebido) → correr integration tests de grupos → [x].
 
 - Solicitudes de amistad (por nickname y por link de invitación). Lista de amigos.
 - Retar desde la lista de amigos (además de búsqueda).
@@ -88,7 +88,9 @@ Conectar el motor de la Fase 1 a la plataforma. Solo modo amistoso.
 
 ---
 
-## Fase 6 — Home estilo lobby + pulido PWA `[ ]`
+## Fase 6 — Home estilo lobby + pulido PWA `[x]`
+
+> 2026-07-05: cerrada técnicamente. Home final (avatar en escenario, Jugar, rail de minijuegos con destacado y mocks, wallet, retos, grupo) del rediseño Jahuga; misiones diarias con evaluación server-side y reclamo por el ledger (E2E: ganar apostada → "Cazador del pozo" → +3.000 exactos, balance final verificado 14.000); SW con cache de estáticos + fallback offline; banner de instalación (Android prompt / guía iOS). Queda la verificación humana del roadmap: instalar la PWA en iPhone y Android reales y jugar una apostada de punta a punta.
 
 - Home final: avatar en grande, botón Jugar, scroll vertical de minijuegos (cards, aunque haya uno solo — la card 2 es "Próximamente"), wallet, retos pendientes.
 - Misiones simples (ej.: "ganá 2 partidas hoy") con recompensa en coins.
