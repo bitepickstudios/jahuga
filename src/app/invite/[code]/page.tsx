@@ -48,7 +48,7 @@ export default async function InvitePage({ params }: { params: Promise<{ code: s
   const ownerName = owner.display_name ?? `@${owner.nickname}`;
   return (
     <main className="bg-stadium flex min-h-dvh flex-col items-center justify-center gap-5 px-6 py-16 text-center">
-      <Image src="/assets/logo.svg" alt="Jahuga" width={200} height={51} priority />
+      <Image src="/assets/logo.v2.svg" alt="Jahuga" width={200} height={51} priority />
       {owner.photo_url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={owner.photo_url} alt="" className="size-24 rounded-full border-2 border-volt object-cover" />

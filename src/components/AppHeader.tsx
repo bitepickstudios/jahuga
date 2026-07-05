@@ -33,7 +33,7 @@ export function AppHeader({
     <header className="absolute inset-x-0 top-0 z-40">
       <div className="relative mx-auto flex h-16 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-16">
         <Link href="/" aria-label="Jahuga — inicio" className="shrink-0">
-          <Image src="/assets/logo.svg" alt="Jahuga" width={112} height={28} priority className="h-5 w-auto lg:h-7" />
+          <Image src="/assets/logo.v2.svg" alt="Jahuga" width={112} height={28} priority className="h-5 w-auto lg:h-7" />
         </Link>
 
         {profile && (
@@ -80,8 +80,8 @@ export function AppHeader({
             </div>
 
             <Link
-              href="/"
-              aria-label={`Notificaciones${pendingCount ? `: ${pendingCount} retos pendientes` : ""}`}
+              href="/partidas"
+              aria-label={`Mis partidas${pendingCount ? `: ${pendingCount} retos pendientes` : ""}`}
               className="relative flex size-10 items-center justify-center rounded-xl border border-ice/10 bg-navy/80 backdrop-blur"
             >
               <Bell size={18} className="text-ice/90" />

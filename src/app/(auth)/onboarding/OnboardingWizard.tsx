@@ -52,13 +52,13 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
         <div className="flex flex-col gap-4">
           <TextField type="text" fullWidth value={displayName} onChange={setDisplayName}>
             <Label>¿Cómo te llamás?</Label>
-            <Input placeholder="Tu nombre" autoComplete="name" />
+            <Input placeholder="Tu nombre" autoComplete="name" className="rounded-xl" />
           </TextField>
           <Button
             variant="primary"
             size="lg"
             fullWidth
-            className="min-h-12"
+            className="min-h-12 rounded-xl"
             isDisabled={!displayName.trim()}
             onPress={() => setStep(2)}
           >
@@ -87,7 +87,7 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
             variant="primary"
             size="lg"
             fullWidth
-            className="min-h-12"
+            className="min-h-12 rounded-xl"
             isDisabled={!birthDate}
             onPress={() => setStep(3)}
           >
@@ -121,7 +121,7 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
             variant="primary"
             size="lg"
             fullWidth
-            className="min-h-12"
+            className="min-h-12 rounded-xl"
             isDisabled={saving || uploading}
             onPress={finish}
           >

@@ -13,25 +13,25 @@ export function SignUpForm() {
     <form action={formAction} className="flex flex-col gap-4">
       <TextField name="nickname" type="text" isRequired fullWidth>
         <Label>Nickname</Label>
-        <Input placeholder="tu_apodo" autoComplete="username" />
+        <Input placeholder="tu_apodo" autoComplete="username" className="rounded-xl" />
       </TextField>
       <TextField name="email" type="email" isRequired fullWidth>
         <Label>Correo</Label>
-        <Input placeholder="vos@ejemplo.com" autoComplete="email" />
+        <Input placeholder="vos@ejemplo.com" autoComplete="email" className="rounded-xl" />
       </TextField>
       <TextField name="password" type="password" isRequired fullWidth>
         <Label>Contraseña</Label>
-        <Input placeholder="Mínimo 8, con letra y número" autoComplete="new-password" />
+        <Input placeholder="Mínimo 8, con letra y número" autoComplete="new-password" className="rounded-xl" />
       </TextField>
       <TextField name="confirm" type="password" isRequired fullWidth>
         <Label>Repetir contraseña</Label>
-        <Input autoComplete="new-password" />
+        <Input autoComplete="new-password" className="rounded-xl" />
       </TextField>
 
       {state.error && <p className="text-sm text-danger">{state.error}</p>}
       {state.info && <p className="text-sm text-gold">{state.info}</p>}
 
-      <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12" isDisabled={pending}>
+      <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12 rounded-xl" isDisabled={pending}>
         {pending ? "Creando..." : "Crear cuenta"}
       </Button>
     </form>

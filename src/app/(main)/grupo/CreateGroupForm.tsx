@@ -29,11 +29,11 @@ export function CreateGroupForm({ userId }: { userId: string }) {
     <form action={formAction} className="flex flex-col gap-4">
       <TextField name="name" type="text" isRequired fullWidth>
         <Label>Nombre del grupo</Label>
-        <Input placeholder="Los del barrio" maxLength={40} />
+        <Input placeholder="Los del barrio" maxLength={40} className="rounded-xl" />
       </TextField>
       <TextField name="description" type="text" fullWidth>
         <Label>Descripción (opcional)</Label>
-        <Input placeholder="Se juega como se vive" maxLength={140} />
+        <Input placeholder="Se juega como se vive" maxLength={140} className="rounded-xl" />
       </TextField>
 
       <input type="hidden" name="image_url" value={imageUrl ?? ""} />
@@ -60,7 +60,7 @@ export function CreateGroupForm({ userId }: { userId: string }) {
 
       {state.error && <p className="text-sm text-danger">{state.error}</p>}
 
-      <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12" isDisabled={pending || uploading}>
+      <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12 rounded-xl" isDisabled={pending || uploading}>
         {pending ? "Creando..." : "Crear grupo"}
       </Button>
     </form>

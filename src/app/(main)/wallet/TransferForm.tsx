@@ -38,7 +38,7 @@ export function TransferForm({ friends }: { friends: { id: string; label: string
           aria-label="Monto a transferir"
           className="min-h-11 w-full flex-1 rounded-xl border border-ice/15 bg-night/50 px-3 text-ice placeholder:text-ice/30"
         />
-        <Button type="submit" variant="primary" isDisabled={pending} className="min-h-11 shrink-0">
+        <Button type="submit" variant="primary" isDisabled={pending} className="min-h-11 shrink-0 rounded-xl">
           {pending ? "..." : "Enviar"}
         </Button>
       </div>

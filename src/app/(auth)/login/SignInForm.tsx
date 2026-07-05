@@ -13,16 +13,16 @@ export function SignInForm() {
     <form action={formAction} className="flex flex-col gap-4">
       <TextField name="email" type="email" isRequired fullWidth>
         <Label>Correo</Label>
-        <Input autoComplete="email" />
+        <Input autoComplete="email" className="rounded-xl" />
       </TextField>
       <TextField name="password" type="password" isRequired fullWidth>
         <Label>Contraseña</Label>
-        <Input autoComplete="current-password" />
+        <Input autoComplete="current-password" className="rounded-xl" />
       </TextField>
 
       {state.error && <p className="text-sm text-danger">{state.error}</p>}
 
-      <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12" isDisabled={pending}>
+      <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12 rounded-xl" isDisabled={pending}>
         {pending ? "Entrando..." : "Entrar"}
       </Button>
     </form>

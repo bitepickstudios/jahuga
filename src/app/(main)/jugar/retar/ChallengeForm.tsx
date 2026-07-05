@@ -16,7 +16,7 @@ export function ChallengeForm({ defaultNickname = "" }: { defaultNickname?: stri
     <form action={formAction} className="flex flex-col gap-5">
       <TextField name="nickname" type="text" isRequired fullWidth defaultValue={defaultNickname}>
         <Label>Nickname del rival</Label>
-        <Input placeholder="@su_apodo" autoComplete="off" autoCapitalize="none" />
+        <Input placeholder="@su_apodo" autoComplete="off" autoCapitalize="none" className="rounded-xl" />
       </TextField>
 
       <input type="hidden" name="mode" value={mode} />
@@ -71,7 +71,7 @@ export function ChallengeForm({ defaultNickname = "" }: { defaultNickname?: stri
 
       {state.error && <p className="text-sm text-danger">{state.error}</p>}
 
-      <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12" isDisabled={pending}>
+      <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12 rounded-xl" isDisabled={pending}>
         {pending ? "Creando reto..." : amount > 0 ? `Retar por ${formatCoins(amount)} Coins` : "Mandar reto"}
       </Button>
     </form>

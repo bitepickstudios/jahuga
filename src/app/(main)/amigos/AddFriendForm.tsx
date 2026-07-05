@@ -14,9 +14,9 @@ export function AddFriendForm() {
       <div className="flex gap-2">
         <TextField name="nickname" type="text" isRequired fullWidth aria-label="Nickname">
           <Label className="sr-only">Nickname</Label>
-          <Input placeholder="@nickname" autoCapitalize="none" autoComplete="off" />
+          <Input placeholder="@nickname" autoCapitalize="none" autoComplete="off" className="rounded-xl" />
         </TextField>
-        <Button type="submit" variant="primary" isDisabled={pending} className="min-h-11 shrink-0">
+        <Button type="submit" variant="primary" isDisabled={pending} className="min-h-11 shrink-0 rounded-xl">
           {pending ? "..." : "Agregar"}
         </Button>
       </div>
