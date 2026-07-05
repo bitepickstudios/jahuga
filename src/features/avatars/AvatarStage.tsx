@@ -3,8 +3,8 @@ import { PlayerAvatar } from "./PlayerAvatar";
 
 /**
  * Avatar 2D parado sobre la plataforma neón (jahuga-stage-wide-transparent.png).
- * La plataforma (w-full) ancla el alto del contenedor; el avatar se posiciona
- * encima con % → escala igual en desktop y mobile. El padre solo fija el ancho.
+ * La plataforma (w-full, in-flow) ancla el alto; el avatar se para con los pies
+ * sobre la superficie del óvalo. El padre solo fija el ancho.
  */
 export function AvatarStage({
   photoUrl,
@@ -17,8 +17,8 @@ export function AvatarStage({
 }) {
   return (
     <div className={`relative ${className}`}>
-      {/* Glow ambiental */}
-      <div className="pointer-events-none absolute inset-x-[10%] bottom-[10%] top-[-10%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(61,109,255,0.35),transparent_70%)]" />
+      {/* Glow ambiental detrás del cuerpo */}
+      <div className="pointer-events-none absolute inset-x-[22%] bottom-[42%] top-[2%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(61,109,255,0.32),transparent_70%)]" />
 
       {/* Plataforma: define el alto del contenedor */}
       <Image
@@ -30,12 +30,12 @@ export function AvatarStage({
         className="pointer-events-none block h-auto w-full select-none"
       />
 
-      {/* Avatar parado sobre el centro de la plataforma */}
+      {/* Avatar: pies apoyados sobre el centro del óvalo (~46% desde abajo) */}
       <PlayerAvatar
         photoUrl={photoUrl}
         pose="idle"
         skinId={skinId}
-        className="absolute bottom-[12%] left-1/2 h-[135%] w-auto -translate-x-1/2 drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)]"
+        className="absolute bottom-[44%] left-1/2 h-[105%] w-auto -translate-x-1/2 drop-shadow-[0_18px_26px_rgba(0,0,0,0.55)]"
       />
     </div>
   );

@@ -12,13 +12,14 @@ export default async function MainLayout({ children }: { children: React.ReactNo
     : [[], null];
 
   return (
-    <div className="flex min-h-dvh flex-col">
+    <div className="relative flex min-h-dvh flex-col">
       <AppHeader
         profile={profile ? { nickname: profile.nickname, photo_url: profile.photo_url } : null}
         pendingCount={challenges.length}
         balance={balance}
       />
-      <div className="flex-1 pb-24 lg:pb-0">{children}</div>
+      {/* pt-16: el header es overlay absoluto; el contenido despeja los 64px */}
+      <div className="flex flex-1 flex-col pt-16 pb-24 lg:pb-0">{children}</div>
       {profile && <BottomNav />}
     </div>
   );

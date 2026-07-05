@@ -62,9 +62,11 @@ Conectar el motor de la Fase 1 a la plataforma. Solo modo amistoso.
 
 ---
 
-## Fase 4 — Amigos y grupos `[~]`
+## Fase 4 — Amigos y grupos `[x]`
 
-> 2026-07-05: **amigos verificado E2E** (solicitud por nickname → aceptar → lista, link de invitación crea la solicitud, retar desde la lista con prefill). **Grupos sigue bloqueado** por el event trigger ajeno `rls_auto_enable` (se re-aplica con cada DDL; los repairs v1/v2 no lo sobrevivieron o se revirtieron). Pendiente: aplicar `20260705000008_repair_v3.sql` (best-effort con diagnóstico embebido) → correr integration tests de grupos → [x].
+> 2026-07-05: cerrada. Amigos verificado E2E (solicitud por nickname → aceptar → lista, link de invitación, retar desde la lista con prefill). Grupos verificado E2E (un miembro ve su grupo en la app) + integration tests de RLS (miembro ve su grupo, compañeros ven perfil privado, no-miembro bloqueado, cliente no escribe directo).
+>
+> Nota: la "saga del event trigger `rls_auto_enable`" que bloqueó grupos por varias sesiones fue un **falso positivo de mi arnés de test**, no un problema real de RLS: (1) un bulk insert de PostgREST no aplica defaults a claves ausentes → `role` quedaba NULL y el miembro nunca se agregaba; (2) un nombre de grupo de 1 char violaba el check. Con inserts correctos, la RLS de la migración 3 funciona sin cambios. Los repairs `20260704000004`/`20260705000006`/`20260705000008` fueron innecesarios (idempotentes, sin daño). En la app los inserts de membresía son de a uno, así que el default 'member' siempre aplicó.
 
 - Solicitudes de amistad (por nickname y por link de invitación). Lista de amigos.
 - Retar desde la lista de amigos (además de búsqueda).

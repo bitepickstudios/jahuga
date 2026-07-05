@@ -47,9 +47,12 @@ describe("RLS de grupos (Fase 4)", () => {
       .single();
     if (error) throw error;
     groupId = group.id;
+    // OJO: rol explícito en TODAS las filas — un bulk insert de PostgREST no
+    // aplica defaults a las claves ausentes (les mete NULL). En la app real los
+    // inserts de membresía son de a uno y el default 'member' sí aplica.
     await admin.from("group_members").insert([
       { group_id: groupId, profile_id: owner.user.id, role: "owner" },
-      { group_id: groupId, profile_id: member.user.id },
+      { group_id: groupId, profile_id: member.user.id, role: "member" },
     ]);
     // El miembro se pone privado para probar visibilidad entre compañeros
     await admin.from("profiles").update({ is_public: false }).eq("id", member.user.id);

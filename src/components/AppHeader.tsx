@@ -4,19 +4,19 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, Plus } from "lucide-react";
+import { Bell, Home, Plus, Shield, ShoppingBag, User, Users, type LucideIcon } from "lucide-react";
 import { formatCoins } from "@/features/economy/config";
 import { BuyCoinsModal } from "./BuyCoinsModal";
 
-const NAV = [
-  { href: "/", label: "Lobby" },
-  { href: "/amigos", label: "Amigos" },
-  { href: "/grupo", label: "Grupos" },
-  { href: "/skins", label: "Tienda" },
-  { href: "/perfil", label: "Perfil" },
-] as const;
+const NAV: { href: string; label: string; icon: LucideIcon }[] = [
+  { href: "/", label: "Lobby", icon: Home },
+  { href: "/amigos", label: "Amigos", icon: Users },
+  { href: "/grupo", label: "Grupos", icon: Shield },
+  { href: "/skins", label: "Tienda", icon: ShoppingBag },
+  { href: "/perfil", label: "Perfil", icon: User },
+];
 
-/** Header del shell (DESIGN.md §6): logo · nav (desktop) · coins+ · campana · avatar. */
+/** Header del shell (DESIGN.md §6): overlay transparente · logo · nav-box · coins+ · campana · avatar. */
 export function AppHeader({
   profile,
   pendingCount = 0,
@@ -30,25 +30,29 @@ export function AppHeader({
   const [buyOpen, setBuyOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ice/5 bg-night/70 backdrop-blur">
+    <header className="absolute inset-x-0 top-0 z-40">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4">
         <Link href="/" aria-label="Jahuga — inicio" className="shrink-0">
           <Image src="/assets/logo.svg" alt="Jahuga" width={112} height={28} priority />
         </Link>
 
         {profile && (
-          <nav aria-label="Secciones" className="hidden items-center gap-1 lg:flex">
-            {NAV.map(({ href, label }) => {
+          <nav
+            aria-label="Secciones"
+            className="hidden items-center gap-1 rounded-2xl border border-ice/10 bg-navy/70 p-1.5 backdrop-blur lg:flex"
+          >
+            {NAV.map(({ href, label, icon: Icon }) => {
               const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
               return (
                 <Link
                   key={href}
                   href={href}
                   aria-current={active ? "page" : undefined}
-                  className={`rounded-full px-4 py-2 font-ui text-sm font-bold transition-colors ${
-                    active ? "bg-volt/15 text-volt" : "text-ice/60 hover:text-ice"
+                  className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 font-ui text-sm font-bold transition-colors ${
+                    active ? "bg-volt/15 text-volt" : "text-ice/60 hover:bg-ice/5 hover:text-ice"
                   }`}
                 >
+                  <Icon size={16} />
                   {label}
                 </Link>
               );
@@ -59,7 +63,7 @@ export function AppHeader({
         {profile ? (
           <div className="flex shrink-0 items-center gap-2">
             {/* Coin pill + botón de compra (mock, WhatsApp) */}
-            <div className="flex h-10 items-center gap-1.5 rounded-full border border-ice/10 bg-navy/80 pl-1.5 pr-1.5">
+            <div className="flex h-10 items-center gap-1.5 rounded-xl border border-ice/10 bg-navy/80 pl-1.5 pr-1.5 backdrop-blur">
               <Link href="/wallet" aria-label="Tu wallet de Coins" className="flex items-center gap-1.5">
                 <Image src="/assets/jahuga-coin-transparent.png" alt="" width={24} height={24} />
                 <span className="font-ui text-sm font-extrabold text-ice">
@@ -70,7 +74,7 @@ export function AppHeader({
                 type="button"
                 onClick={() => setBuyOpen(true)}
                 aria-label="Comprar Coins"
-                className="flex size-7 items-center justify-center rounded-full bg-volt text-volt-ink transition-transform active:scale-90"
+                className="flex size-7 items-center justify-center rounded-lg bg-volt text-volt-ink transition-transform active:scale-90"
               >
                 <Plus size={16} strokeWidth={3} />
               </button>
@@ -79,7 +83,7 @@ export function AppHeader({
             <Link
               href="/"
               aria-label={`Notificaciones${pendingCount ? `: ${pendingCount} retos pendientes` : ""}`}
-              className="relative flex size-10 items-center justify-center rounded-full border border-ice/10 bg-navy/80"
+              className="relative flex size-10 items-center justify-center rounded-xl border border-ice/10 bg-navy/80 backdrop-blur"
             >
               <Bell size={18} className="text-ice/90" />
               {pendingCount > 0 && (
@@ -110,7 +114,7 @@ export function AppHeader({
         ) : (
           <Link
             href="/login"
-            className="flex h-10 shrink-0 items-center rounded-full border border-ice/15 bg-navy/80 px-4 font-ui text-sm font-bold text-ice active:bg-navy-raised"
+            className="flex h-10 shrink-0 items-center rounded-xl border border-ice/15 bg-navy/80 px-4 font-ui text-sm font-bold text-ice active:bg-navy-raised"
           >
             Entrar
           </Link>

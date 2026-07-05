@@ -54,7 +54,10 @@ export default async function Home() {
     ) : null;
 
   return (
-    <main className="bg-stadium relative flex-1 lg:h-[calc(100dvh-4rem)] lg:overflow-hidden">
+    <main className="relative flex-1 lg:h-[calc(100dvh-4rem)] lg:overflow-hidden">
+      {/* Fondo de estadio fijo: cubre todo el viewport, también detrás del header overlay */}
+      <div className="bg-stadium pointer-events-none fixed inset-0 -z-10" />
+
       {streak && streak.reward > 0 && (
         <div className="pointer-events-none absolute inset-x-0 top-3 z-10 mx-auto flex w-fit items-center gap-1.5 rounded-full border border-gold/40 bg-navy/90 px-4 py-1.5 font-ui text-sm font-bold text-gold">
           <Flame size={16} /> Día {streak.days} de racha: +{formatCoins(streak.reward)} Coins
@@ -84,8 +87,8 @@ export default async function Home() {
       {/* ── Mobile: stack con scroll ── */}
       <div className="flex flex-col gap-4 px-4 py-5 lg:hidden">
         {challengeCards}
-        <AvatarStage photoUrl={profile.photo_url} skinId={skinId} className="mx-auto mt-6 w-full max-w-xs" />
-        <p className="mt-6 text-center font-ui text-lg font-bold text-ice/80">
+        <AvatarStage photoUrl={profile.photo_url} skinId={skinId} className="mx-auto mt-24 w-full max-w-[280px]" />
+        <p className="mt-4 text-center font-ui text-lg font-bold text-ice/80">
           {profile.display_name ?? `@${profile.nickname}`}
         </p>
         {groupCard}

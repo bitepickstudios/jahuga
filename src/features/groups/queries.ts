@@ -35,6 +35,7 @@ export async function getMyGroup(): Promise<MyGroup | null> {
   } = await supabase.auth.getUser();
   if (!user) return null;
 
+  // Grupo + membresías vía RLS (el miembro ve su grupo).
   const { data: membership } = await supabase
     .from("group_members")
     .select("group_id")
@@ -48,6 +49,7 @@ export async function getMyGroup(): Promise<MyGroup | null> {
   ]);
   if (!group || !memberRows) return null;
 
+  // Perfiles/stats de los miembros con admin (para ver a compañeros con perfil privado).
   const admin = createAdminClient();
   const ids = memberRows.map((m) => m.profile_id);
   const [{ data: profiles }, { data: stats }] = await Promise.all([
