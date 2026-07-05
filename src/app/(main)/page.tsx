@@ -6,8 +6,11 @@ import { getPendingChallenges } from "@/features/matches/queries";
 import { getMyGroup } from "@/features/groups/queries";
 import { checkinStreak } from "@/features/economy/actions";
 import { formatCoins } from "@/features/economy/config";
+import { getMissions } from "@/features/missions/queries";
 import { PlayerAvatar } from "@/features/avatars/PlayerAvatar";
 import { ChallengeCard } from "./ChallengeCard";
+import { MissionList } from "./MissionList";
+import { InstallHint } from "./InstallHint";
 
 // ponytail: sin env de Supabase la app cae a la landing anónima.
 const hasSupabaseEnv = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL);
@@ -18,11 +21,12 @@ export default async function Home() {
 
   if (!profile) return <AnonHome />;
 
-  const [challenges, myGroup, avatar, streak] = await Promise.all([
+  const [challenges, myGroup, avatar, streak, missions] = await Promise.all([
     getPendingChallenges(),
     getMyGroup(),
     getAvatar(profile.id),
     checkinStreak(), // idempotente por día; premia la vuelta diaria (D2)
+    getMissions(),
   ]);
   const skinId = ((avatar?.equipped as Record<string, string | null>)?.skin as string) ?? "albirroja";
 
@@ -151,6 +155,16 @@ export default async function Home() {
           </Link>
         </aside>
       </div>
+
+      {/* Misiones del día */}
+      {missions.length > 0 && (
+        <section className="mx-auto w-full max-w-6xl px-4 pt-2">
+          <h2 className="mb-3 font-ui text-xl font-extrabold text-ice">Misiones de hoy</h2>
+          <MissionList missions={missions} />
+        </section>
+      )}
+
+      <InstallHint />
 
       {/* Minijuegos */}
       <section className="mx-auto w-full max-w-6xl px-4 pb-8 pt-4">

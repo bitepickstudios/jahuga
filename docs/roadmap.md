@@ -74,9 +74,9 @@ Conectar el motor de la Fase 1 a la plataforma. Solo modo amistoso.
 
 ---
 
-## Fase 5 — Economía: Coins `[~]`
+## Fase 5 — Economía: Coins `[x]`
 
-> 2026-07-04: código completo — ledger inmutable con funciones atómicas (grant/escrow/settle/refund/transfer/streak/buy), apuestas integradas al ciclo del reto (escrow al aceptar, payout al resolver, refund en empate/rechazo/expiración, walkover paga), wallet + historial + transferencias, racha diaria automática, tienda de skins que cambia la camiseta del avatar. Cierre al aplicar `20260704000005_economy.sql` (tests de invariante + E2E). D1 (sin rake) y D2 (valores) registradas; D8 (dinero real) NO implementada — condicionada a habilitación legal.
+> 2026-07-05: cerrada. Ledger inmutable con funciones atómicas, apuestas integradas al ciclo del reto, wallet + historial + transferencias, racha diaria automática, tienda de skins que cambia la camiseta del avatar. Verificado: invariante `balance = sum(ledger)` (7/7 integration tests: bono exacto, pozo exacto, doble-settle no paga, límite diario, cliente no puede inflarse el saldo) + E2E con dos browsers (reto por 500 → escrow 10.000/10.000 → 5-0 → payout 11.000/10.000, suma total intacta; compra y equipado de skin). D1 sin rake; D2 valores; D8 (dinero real) NO implementada — condicionada a habilitación legal.
 
 - Ledger inmutable (`coin_transactions`) + saldo derivado. Bono de bienvenida retroactivo.
 - Apuestas: al aceptar un reto con apuesta, escrow del monto de ambos; al resolverse, payout al ganador (todo en una transacción/función de base de datos, atómica).

@@ -154,7 +154,7 @@ Flujo: al aceptar → `wager_escrow` (−amount a cada uno); al resolver → `wa
 ### Misiones y rachas
 ```sql
 create table missions (
-  id uuid primary key default gen_random_uuid(),
+  id text primary key,                    -- 'win2_day' (ids legibles para seeds)
   title text, description text,
   reward_coins bigint not null,
   rule jsonb not null,                    -- { type: 'win_matches', count: 2, window: 'day' }
@@ -162,12 +162,13 @@ create table missions (
 );
 
 create table mission_progress (
-  mission_id uuid references missions(id),
+  mission_id text references missions(id),
   profile_id uuid references profiles(id),
+  period date not null default current_date,  -- ventana diaria sin resets
   progress int default 0,
   completed_at timestamptz,
   claimed_at timestamptz,
-  primary key (mission_id, profile_id)
+  primary key (mission_id, profile_id, period)
 );
 
 create table streaks (

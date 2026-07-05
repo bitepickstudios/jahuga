@@ -180,6 +180,17 @@ export async function commitMove(
     } else {
       await admin.rpc("fn_refund_wager", { p_match: matchId }); // empate: se devuelve
     }
+    // Misiones del día (F6): jugar cuenta para ambos, ganar para el ganador
+    for (const player of [match.challenger_id, match.opponent_id]) {
+      if (player) await admin.rpc("fn_mission_event", { p_profile: player, p_event: "play_matches" });
+    }
+    if (outcome.winnerId) {
+      await admin.rpc("fn_mission_event", { p_profile: outcome.winnerId, p_event: "win_matches" });
+      const { data: wager } = await admin.from("wagers").select("amount").eq("match_id", matchId).maybeSingle();
+      if (wager) {
+        await admin.rpc("fn_mission_event", { p_profile: outcome.winnerId, p_event: "win_wagered" });
+      }
+    }
     await admin.rpc("refresh_profile_stats");
   }
 
