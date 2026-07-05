@@ -4,17 +4,17 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, Home, Plus, Shield, ShoppingBag, User, Users, type LucideIcon } from "lucide-react";
+import { Bell, Plus } from "lucide-react";
 import { formatCoins } from "@/features/economy/config";
 import { BuyCoinsModal } from "./BuyCoinsModal";
 
-const NAV: { href: string; label: string; icon: LucideIcon }[] = [
-  { href: "/", label: "Lobby", icon: Home },
-  { href: "/amigos", label: "Amigos", icon: Users },
-  { href: "/grupo", label: "Grupos", icon: Shield },
-  { href: "/skins", label: "Tienda", icon: ShoppingBag },
-  { href: "/perfil", label: "Perfil", icon: User },
-];
+const NAV = [
+  { href: "/", label: "Lobby" },
+  { href: "/amigos", label: "Amigos" },
+  { href: "/grupo", label: "Grupos" },
+  { href: "/skins", label: "Tienda" },
+  { href: "/perfil", label: "Perfil" },
+] as const;
 
 /** Header del shell (DESIGN.md §6): overlay transparente · logo · nav-box · coins+ · campana · avatar. */
 export function AppHeader({
@@ -31,9 +31,9 @@ export function AppHeader({
 
   return (
     <header className="absolute inset-x-0 top-0 z-40">
-      <div className="relative mx-auto flex h-16 w-full items-center justify-between gap-4 px-16">
+      <div className="relative mx-auto flex h-16 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-16">
         <Link href="/" aria-label="Jahuga — inicio" className="shrink-0">
-          <Image src="/assets/logo.svg" alt="Jahuga" width={112} height={28} priority />
+          <Image src="/assets/logo.svg" alt="Jahuga" width={112} height={28} priority className="h-5 w-auto lg:h-7" />
         </Link>
 
         {profile && (
@@ -41,18 +41,17 @@ export function AppHeader({
             aria-label="Secciones"
             className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-2xl border border-ice/10 bg-navy/70 p-1.5 backdrop-blur lg:flex"
           >
-            {NAV.map(({ href, label, icon: Icon }) => {
+            {NAV.map(({ href, label }) => {
               const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
               return (
                 <Link
                   key={href}
                   href={href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 font-ui text-sm font-bold transition-colors ${
+                  className={`rounded-xl px-4 py-2 font-ui text-sm font-bold transition-colors ${
                     active ? "bg-volt/15 text-volt" : "text-ice/60 hover:bg-ice/5 hover:text-ice"
                   }`}
                 >
-                  <Icon size={16} />
                   {label}
                 </Link>
               );

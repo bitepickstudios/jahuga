@@ -116,7 +116,7 @@ function AnonHome() {
     <main className="bg-stadium -mb-24 flex flex-1 flex-col items-center justify-center gap-6 px-6 py-16 text-center">
       <Image src="/assets/logo.svg" alt="Jahuga" width={280} height={71} priority />
       <p className="max-w-xs text-lg text-ice/70">
-        Minijuegos entre amigos. Retá, apostá Coins y ganá reputación.
+        Minijuegos entre amigos. Retá, apostá y ganá.
       </p>
       <div className="flex w-full max-w-xs flex-col gap-3">
         {hasSupabaseEnv && (
@@ -135,12 +135,6 @@ function AnonHome() {
             </Link>
           </>
         )}
-        <Link
-          href="/play/local"
-          className="flex min-h-12 items-center justify-center rounded-xl border border-ice/15 px-6 text-ice/80 active:bg-ice/5"
-        >
-          Probar penales sin cuenta
-        </Link>
       </div>
     </main>
   );

@@ -10,7 +10,7 @@ export function LobbyActions() {
   const [pickerOpen, setPickerOpen] = useState(false);
 
   return (
-    <div className="mx-auto flex w-full max-w-[240px] flex-col items-stretch gap-3">
+    <div className="flex w-full flex-col items-stretch gap-3 lg:ml-auto lg:max-w-[300px]">
       <button
         type="button"
         onClick={() => setPickerOpen(true)}

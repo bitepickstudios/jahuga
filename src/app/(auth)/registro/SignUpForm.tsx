@@ -34,10 +34,6 @@ export function SignUpForm() {
       <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12" isDisabled={pending}>
         {pending ? "Creando..." : "Crear cuenta"}
       </Button>
-
-      <p className="text-center text-xs text-ice/40">
-        Los Coins son una moneda virtual sin valor real: no se compran ni se canjean por dinero.
-      </p>
     </form>
   );
 }
