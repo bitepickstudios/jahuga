@@ -64,18 +64,20 @@ export default async function Home() {
         </div>
       )}
 
-      {/* ── Desktop: 3 columnas, entra en viewport, sin scroll ── */}
-      <div className="mx-auto hidden h-full w-full max-w-6xl grid-cols-[300px_1fr_340px] items-center gap-6 px-4 lg:grid">
+      {/* ── Desktop: 3 columnas alineadas a la base, entra en viewport ── */}
+      <div className="mx-auto hidden h-[calc(100dvh-4rem)] w-full max-w-[1900px] grid-cols-[minmax(320px,1fr)_minmax(0,1.7fr)_minmax(320px,1fr)] items-end gap-10 px-16 pb-10 lg:grid">
         <aside className="flex flex-col gap-4">
           {groupCard}
           {missionsCard}
         </aside>
 
-        <section className="flex h-full flex-col items-center justify-center">
-          <AvatarStage photoUrl={profile.photo_url} skinId={skinId} className="w-[400px] max-w-full" />
-          <p className="mt-8 font-ui text-lg font-bold text-ice/80">
-            {profile.display_name ?? `@${profile.nickname}`}
-          </p>
+        <section className="flex flex-col items-center justify-end">
+          <AvatarStage
+            photoUrl={profile.photo_url}
+            skinId={skinId}
+            name={profile.display_name ?? `@${profile.nickname}`}
+            className="w-[420px] max-w-full"
+          />
         </section>
 
         <aside className="flex flex-col gap-3">
@@ -87,10 +89,12 @@ export default async function Home() {
       {/* ── Mobile: stack con scroll ── */}
       <div className="flex flex-col gap-4 px-4 py-5 lg:hidden">
         {challengeCards}
-        <AvatarStage photoUrl={profile.photo_url} skinId={skinId} className="mx-auto mt-24 w-full max-w-[280px]" />
-        <p className="mt-4 text-center font-ui text-lg font-bold text-ice/80">
-          {profile.display_name ?? `@${profile.nickname}`}
-        </p>
+        <AvatarStage
+          photoUrl={profile.photo_url}
+          skinId={skinId}
+          name={profile.display_name ?? `@${profile.nickname}`}
+          className="mx-auto mt-28 w-full max-w-[280px]"
+        />
         {groupCard}
         {missionsCard}
         <LobbyActions />

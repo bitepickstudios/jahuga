@@ -31,7 +31,7 @@ export function AppHeader({
 
   return (
     <header className="absolute inset-x-0 top-0 z-40">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4">
+      <div className="mx-auto flex h-16 w-full items-center justify-between gap-4 px-16">
         <Link href="/" aria-label="Jahuga — inicio" className="shrink-0">
           <Image src="/assets/logo.svg" alt="Jahuga" width={112} height={28} priority />
         </Link>
