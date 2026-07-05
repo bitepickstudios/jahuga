@@ -108,6 +108,6 @@ select 'policy', tablename, policyname || ' → ' || coalesce(qual, '(sin qual)'
 from pg_policies
 where schemaname = 'public' and tablename in ('groups', 'group_members')
 union all
-select 'event_trigger', evtname, evtfoid::regproc::text || ' [' || evtenabled || ']'
+select 'event_trigger', evtname, evtfoid::regproc::text || ' [' || evtenabled::text || ']'
 from pg_event_trigger
 order by 1, 2;
