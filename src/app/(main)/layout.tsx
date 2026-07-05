@@ -18,7 +18,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
         pendingCount={challenges.length}
         balance={balance}
       />
-      <div className="flex-1 pb-24">{children}</div>
+      <div className="flex-1 pb-24 lg:pb-0">{children}</div>
       {profile && <BottomNav />}
     </div>
   );

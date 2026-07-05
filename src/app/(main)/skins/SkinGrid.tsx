@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
+import { Coins } from "lucide-react";
 import { buySkin, equipSkin } from "@/features/economy/actions";
 import { formatCoins } from "@/features/economy/config";
 import type { Skin } from "@/features/economy/queries";
@@ -76,7 +77,13 @@ export function SkinGrid({
                 isDisabled={busy !== null || balance < s.price_coins}
                 onPress={() => onBuy(s.id)}
               >
-                {busy === s.id ? "..." : `🪙 ${formatCoins(s.price_coins)}`}
+                {busy === s.id ? (
+                  "..."
+                ) : (
+                  <span className="flex items-center justify-center gap-1">
+                    <Coins size={15} /> {formatCoins(s.price_coins)}
+                  </span>
+                )}
               </Button>
             )}
           </div>

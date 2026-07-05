@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button, Input, Label, TextField } from "@heroui/react";
+import { Camera } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { completeOnboarding } from "@/features/profiles/actions";
 
@@ -78,7 +79,7 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
               value={birthDate}
               onChange={(e) => setBirthDate(e.target.value)}
               max={new Date().toISOString().slice(0, 10)}
-              className="min-h-12 rounded-md border border-ice/20 bg-night px-3 text-ice [color-scheme:dark]"
+              className="min-h-12 rounded-xl border border-ice/20 bg-night px-3 text-ice [color-scheme:dark]"
             />
             <p className="text-xs text-ice/40">Mostramos tu edad y tu cumpleaños, nunca la fecha completa.</p>
           </div>
@@ -102,11 +103,11 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
             // eslint-disable-next-line @next/next/no-img-element
             <img src={photoUrl} alt="Tu foto" className="size-32 rounded-full border-2 border-ice/40 object-cover" />
           ) : (
-            <div className="flex size-32 items-center justify-center rounded-full border-2 border-dashed border-ice/30 text-4xl">
-              📷
+            <div className="flex size-32 items-center justify-center rounded-full border-2 border-dashed border-ice/30 text-ice/50">
+              <Camera size={40} />
             </div>
           )}
-          <label className="flex min-h-12 w-full cursor-pointer items-center justify-center rounded-md border border-ice/25 text-ice/80 active:bg-ice/5">
+          <label className="flex min-h-12 w-full cursor-pointer items-center justify-center rounded-xl border border-ice/25 text-ice/80 active:bg-ice/5">
             {uploading ? "Subiendo..." : photoUrl ? "Cambiar foto" : "Elegir foto"}
             <input
               type="file"

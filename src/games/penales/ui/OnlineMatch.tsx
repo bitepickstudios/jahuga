@@ -12,6 +12,7 @@ import {
   type PenaltyResult,
   type RoundMove,
 } from "../engine";
+import { Brain, Clock, Frown, Handshake, Swords, Timer, Trophy, X, type LucideIcon } from "lucide-react";
 import { useMatchChannel } from "@/games/sdk/client";
 import { PenaltyReveal } from "./PenaltyReveal";
 import { Scoreboard } from "./Scoreboard";
@@ -168,13 +169,13 @@ export function OnlineMatch({
   if (match.status === "pending") {
     body =
       match.opponent_id === meId ? (
-        <CenterScreen emoji="⚔️" title={`${name(match.challenger_id)} te retó`}>
+        <CenterScreen Icon={Swords} title={`${name(match.challenger_id)} te retó`}>
           <p className="text-ice/60">
             Tanda de penales · {match.mode === "live" ? "en vivo" : "cuando puedan"}
           </p>
           {wager !== null && (
             <p className="rounded-full border border-gold/40 bg-navy/80 px-4 py-1.5 font-ui text-sm font-bold text-gold">
-              🪙 {coins(wager)} por cabeza — se descuentan al aceptar
+              {coins(wager)} Coins por cabeza — se descuentan al aceptar
             </p>
           )}
           <Button variant="primary" size="lg" fullWidth className="min-h-12 max-w-sm" isDisabled={busy} onPress={() => respond(true)}>
@@ -185,20 +186,20 @@ export function OnlineMatch({
           </Button>
         </CenterScreen>
       ) : (
-        <CenterScreen emoji="⏳" title={`Esperando a ${name(rivalId)}`}>
+        <CenterScreen Icon={Clock} title={`Esperando a ${name(rivalId)}`}>
           <p className="text-ice/60">Le avisamos del reto. Podés cerrar esta pantalla y volver después.</p>
         </CenterScreen>
       );
   } else if (match.status === "declined") {
     body = (
-      <CenterScreen emoji="🙅" title="Reto rechazado">
+      <CenterScreen Icon={X} title="Reto rechazado">
         <p className="text-ice/60">{name(rivalId)} no quiso jugar. Otra vez será.</p>
         <BackHome />
       </CenterScreen>
     );
   } else if (match.status === "expired" || match.status === "abandoned") {
     body = (
-      <CenterScreen emoji="🕰️" title={match.status === "expired" ? "Reto vencido" : "Partida abandonada"}>
+      <CenterScreen Icon={Timer} title={match.status === "expired" ? "Reto vencido" : "Partida abandonada"}>
         {match.winner_id && <p className="text-ice/60">Ganó {name(match.winner_id)} por walkover.</p>}
         <BackHome />
       </CenterScreen>
@@ -228,7 +229,7 @@ export function OnlineMatch({
     const iWon = match.winner_id === meId;
     body = (
       <CenterScreen
-        emoji={match.winner_id === null ? "🤝" : iWon ? "🏆" : "😩"}
+        Icon={match.winner_id === null ? Handshake : iWon ? Trophy : Frown}
         title={match.winner_id === null ? "Empate" : iWon ? "¡Ganaste!" : `Ganó ${name(match.winner_id)}`}
       >
         {match.scores && (
@@ -266,7 +267,7 @@ export function OnlineMatch({
     );
   } else {
     body = (
-      <CenterScreen emoji="🧠" title={`${name(rivalId)} está pensando`}>
+      <CenterScreen Icon={Brain} title={`${name(rivalId)} está pensando`}>
         <p className="text-ice/60">
           {match.mode === "async"
             ? "Podés cerrar y volver cuando juegue: te va a estar esperando."
@@ -291,7 +292,7 @@ export function OnlineMatch({
             />
             {wager !== null && match.status === "active" && (
               <p className="rounded-full bg-navy/80 px-3 py-1 font-ui text-xs font-bold text-gold">
-                Pozo: 🪙 {coins(wager * 2)}
+                Pozo: {coins(wager * 2)} Coins
               </p>
             )}
             {inSuddenDeath && (
@@ -308,17 +309,17 @@ export function OnlineMatch({
 }
 
 function CenterScreen({
-  emoji,
+  Icon,
   title,
   children,
 }: {
-  emoji: string;
+  Icon: LucideIcon;
   title: string;
   children?: React.ReactNode;
 }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
-      <p className="text-5xl">{emoji}</p>
+      <Icon size={56} className="text-volt" />
       <h2 className="font-display text-3xl uppercase text-ice">{title}</h2>
       {children}
     </div>

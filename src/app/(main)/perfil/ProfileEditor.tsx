@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@heroui/react";
+import { Cake, Camera, Handshake, Trophy, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { signOut, updateProfile } from "@/features/profiles/actions";
 import { ageFrom, localDate, type Avatar, type Profile } from "@/features/profiles/types";
@@ -101,9 +102,13 @@ export function ProfileEditor({
           {profile.display_name}
           {age !== null && ` · ${age} años`}
         </p>
-        {birthday && <p className="text-sm text-ice/40">🎂 {birthday}</p>}
-        <label className="cursor-pointer text-sm text-volt underline underline-offset-4">
-          {busy ? "Guardando..." : "Cambiar foto"}
+        {birthday && (
+          <p className="flex items-center gap-1.5 text-sm text-ice/40">
+            <Cake size={14} /> {birthday}
+          </p>
+        )}
+        <label className="flex cursor-pointer items-center gap-1.5 text-sm text-volt underline underline-offset-4">
+          <Camera size={14} /> {busy ? "Guardando..." : "Cambiar foto"}
           <input
             type="file"
             accept="image/*"
@@ -114,7 +119,7 @@ export function ProfileEditor({
         </label>
       </section>
 
-      <section className="rounded-md border border-ice/15 p-4">
+      <section className="rounded-2xl border border-ice/15 p-4">
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ice/50">
           Frases icónicas
         </h2>
@@ -127,9 +132,9 @@ export function ProfileEditor({
                 onClick={() => removePhrase(i)}
                 disabled={busy}
                 aria-label={`Borrar frase: ${phrase}`}
-                className="min-h-8 min-w-8 rounded text-ice/40 active:text-danger"
+                className="flex min-h-8 min-w-8 items-center justify-center rounded-full text-ice/40 active:text-danger"
               >
-                ✕
+                <X size={16} />
               </button>
             </li>
           ))}
@@ -143,7 +148,7 @@ export function ProfileEditor({
             onKeyDown={(e) => e.key === "Enter" && addPhrase()}
             placeholder="Tu frase célebre"
             maxLength={120}
-            className="min-h-11 flex-1 rounded-md border border-ice/20 bg-night px-3 text-ice placeholder:text-ice/30"
+            className="min-h-11 flex-1 rounded-xl border border-ice/20 bg-night px-3 text-ice placeholder:text-ice/30"
           />
           <Button variant="secondary" onPress={addPhrase} isDisabled={busy || !newPhrase.trim()}>
             Agregar
@@ -151,7 +156,7 @@ export function ProfileEditor({
         </div>
       </section>
 
-      <section className="flex items-center justify-between rounded-md border border-ice/15 p-4">
+      <section className="flex items-center justify-between rounded-2xl border border-ice/15 p-4">
         <div>
           <h2 className="text-sm font-semibold uppercase tracking-widest text-ice/50">Perfil público</h2>
           <p className="text-sm text-ice/40">
@@ -178,7 +183,7 @@ export function ProfileEditor({
         </button>
       </section>
 
-      <section className="rounded-md border border-ice/15 p-4">
+      <section className="rounded-2xl border border-ice/15 p-4">
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-ice/50">
           Stats · Penales
         </h2>
@@ -205,15 +210,22 @@ export function ProfileEditor({
       </section>
 
       {history.length > 0 && (
-        <section className="rounded-md border border-ice/15 p-4">
+        <section className="rounded-2xl border border-ice/15 p-4">
           <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-ice/50">
             Últimas partidas
           </h2>
           <ul className="flex flex-col gap-2">
             {history.map((h) => (
               <li key={h.id} className="flex items-center justify-between text-sm">
-                <span className="text-ice/80">
-                  {h.result === "won" ? "🏆" : h.result === "lost" ? "❌" : "🤝"} vs {h.rivalName}
+                <span className="flex items-center gap-1.5 text-ice/80">
+                  {h.result === "won" ? (
+                    <Trophy size={15} className="text-gold" />
+                  ) : h.result === "lost" ? (
+                    <X size={15} className="text-danger" />
+                  ) : (
+                    <Handshake size={15} className="text-ice/50" />
+                  )}
+                  vs {h.rivalName}
                 </span>
                 <span className="font-ui text-lg font-extrabold text-ice">
                   {h.myScore} – {h.rivalScore}

@@ -32,7 +32,7 @@ export function ChallengeForm({ defaultNickname = "" }: { defaultNickname?: stri
             type="button"
             aria-pressed={mode === option.value}
             onClick={() => setMode(option.value)}
-            className={`min-h-16 rounded-md border px-3 py-2 text-left transition-colors ${
+            className={`min-h-16 rounded-xl border px-3 py-2 text-left transition-colors ${
               mode === option.value ? "border-ice bg-ice/10" : "border-ice/20 active:bg-ice/5"
             }`}
           >
@@ -58,7 +58,7 @@ export function ChallengeForm({ defaultNickname = "" }: { defaultNickname?: stri
                   : "border-ice/20 text-ice/70 active:bg-ice/5"
               }`}
             >
-              {preset === 0 ? "Amistoso" : `🪙 ${formatCoins(preset)}`}
+              {preset === 0 ? "Amistoso" : `${formatCoins(preset)}`}
             </button>
           ))}
         </div>
@@ -72,7 +72,7 @@ export function ChallengeForm({ defaultNickname = "" }: { defaultNickname?: stri
       {state.error && <p className="text-sm text-danger">{state.error}</p>}
 
       <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12" isDisabled={pending}>
-        {pending ? "Creando reto..." : amount > 0 ? `Retar por 🪙 ${formatCoins(amount)}` : "Mandar reto"}
+        {pending ? "Creando reto..." : amount > 0 ? `Retar por ${formatCoins(amount)} Coins` : "Mandar reto"}
       </Button>
     </form>
   );

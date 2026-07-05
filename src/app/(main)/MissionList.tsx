@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Coins } from "lucide-react";
 import { claimMission } from "@/features/missions/actions";
 import { formatCoins } from "@/features/economy/config";
 import type { MissionCard } from "@/features/missions/queries";
@@ -29,8 +30,8 @@ export function MissionList({ missions }: { missions: MissionCard[] }) {
             <div className="min-w-0 flex-1">
               <div className="flex items-baseline justify-between gap-2">
                 <p className="truncate font-ui font-extrabold text-ice">{m.title}</p>
-                <span className="shrink-0 font-ui text-xs font-bold text-gold">
-                  🪙 {formatCoins(m.reward)}
+                <span className="flex shrink-0 items-center gap-1 font-ui text-xs font-bold text-gold">
+                  <Coins size={13} /> {formatCoins(m.reward)}
                 </span>
               </div>
               <p className="truncate text-xs text-ice/50">{m.description}</p>

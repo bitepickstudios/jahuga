@@ -10,6 +10,7 @@ import {
   getRoundResults,
   penalesGame,
 } from "../engine";
+import { EyeOff } from "lucide-react";
 import { botMove } from "../bot";
 import { PenaltyReveal } from "./PenaltyReveal";
 import { Scoreboard } from "./Scoreboard";
@@ -127,7 +128,7 @@ export function PenalesMatch() {
 
         {screen.kind === "handoff" && (
           <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-            <p className="text-4xl">🤫</p>
+            <EyeOff size={48} className="text-volt" />
             <h2 className="font-display text-3xl uppercase text-ice">
               Pasale el teléfono a {names[screen.player]}
             </h2>

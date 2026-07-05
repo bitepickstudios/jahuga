@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, Input, Label, TextField } from "@heroui/react";
+import { Crown, Shield, Swords, User, X } from "lucide-react";
 import {
   addGroupMember,
   dissolveGroup,
@@ -61,7 +62,9 @@ export function GroupView({ data, meId }: { data: MyGroup; meId: string }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={group.image_url} alt="" className="size-16 rounded-2xl object-cover" />
         ) : (
-          <span className="flex size-16 items-center justify-center rounded-2xl bg-navy-raised text-3xl">🛡️</span>
+          <span className="flex size-16 items-center justify-center rounded-2xl bg-navy-raised text-ice/60">
+            <Shield size={30} />
+          </span>
         )}
         <div className="min-w-0">
           <h1 className="truncate font-ui text-2xl font-extrabold text-ice">{group.name}</h1>
@@ -94,12 +97,14 @@ export function GroupView({ data, meId }: { data: MyGroup; meId: string }) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={m.photo_url} alt="" className="size-10 rounded-full object-cover" />
               ) : (
-                <span className="flex size-10 items-center justify-center rounded-full bg-navy-raised">🙂</span>
+                <span className="flex size-10 items-center justify-center rounded-full bg-navy-raised text-ice/60">
+                  <User size={18} />
+                </span>
               )}
               <Link href={`/u/${m.nickname}`} className="min-w-0 flex-1">
-                <p className="truncate font-ui font-bold text-ice">
+                <p className="flex items-center gap-1.5 truncate font-ui font-bold text-ice">
                   {m.display_name ?? `@${m.nickname}`}
-                  {m.role === "owner" && <span className="ml-1.5 text-gold">👑</span>}
+                  {m.role === "owner" && <Crown size={15} className="text-gold" />}
                 </p>
                 <p className="text-xs text-ice/40">
                   {m.played} jugadas · {m.won} ganadas
@@ -108,9 +113,10 @@ export function GroupView({ data, meId }: { data: MyGroup; meId: string }) {
               {m.id !== meId && (
                 <Link
                   href={`/jugar/retar?nick=${encodeURIComponent(m.nickname)}`}
+                  aria-label={`Retar a @${m.nickname}`}
                   className="flex min-h-10 items-center rounded-xl bg-volt px-3 font-ui text-sm font-extrabold text-volt-ink transition-transform active:scale-95"
                 >
-                  ⚔️
+                  <Swords size={16} />
                 </Link>
               )}
               {isOwner && m.id !== meId && (
@@ -121,7 +127,7 @@ export function GroupView({ data, meId }: { data: MyGroup; meId: string }) {
                   aria-label={`Sacar a @${m.nickname}`}
                   className="flex size-10 items-center justify-center rounded-xl border border-ice/15 text-ice/50 active:text-danger"
                 >
-                  ✕
+                  <X size={18} />
                 </button>
               )}
             </li>

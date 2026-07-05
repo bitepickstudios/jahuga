@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Bot, ChevronRight, Swords } from "lucide-react";
 import { getOwnProfile } from "@/features/profiles/queries";
 
 export const metadata: Metadata = { title: "Jugar — Jahuga" };
@@ -25,23 +26,25 @@ export default async function JugarPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent" />
           <h2 className="absolute bottom-3 left-4 font-ui text-2xl font-extrabold text-ice">
-            ⚽ Tandas de Penales
+            Tandas de Penales
           </h2>
         </div>
         <div className="flex flex-col gap-3 p-4">
           <p className="text-sm text-ice/60">Leé al rival. Cinco penales por lado, sin reflejos: psicología.</p>
           <Link
             href="/jugar/retar"
-            className="flex min-h-12 items-center justify-center rounded-xl bg-volt px-6 font-ui text-lg font-extrabold text-volt-ink shadow-[0_4px_0_rgba(0,0,0,0.35)] transition-transform active:translate-y-0.5 active:shadow-none"
+            className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-volt px-6 font-ui text-lg font-extrabold text-volt-ink shadow-[0_4px_0_rgba(0,0,0,0.35)] transition-transform active:translate-y-0.5 active:shadow-none"
           >
-            Retar a alguien
+            <Swords size={20} /> Retar a alguien
           </Link>
           <Link
             href="/play/local"
             className="flex min-h-12 items-center justify-between rounded-xl border border-ice/15 bg-night/40 px-5 font-ui font-bold text-ice/90 active:bg-ice/5"
           >
-            <span>🤖 Vs la máquina · local</span>
-            <span className="text-ice/40">›</span>
+            <span className="flex items-center gap-2">
+              <Bot size={20} /> Vs la máquina · local
+            </span>
+            <ChevronRight size={18} className="text-ice/40" />
           </Link>
         </div>
       </section>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { SearchX } from "lucide-react";
 import { getOwnProfile } from "@/features/profiles/queries";
 import { getMatch, getMatchPlayers, getVisibleMoves, getWagerAmount } from "@/features/matches/queries";
 import { commitMove, getMatchSnapshot, rematch, respondChallenge } from "@/features/matches/actions";
@@ -17,7 +18,7 @@ export default async function MatchPage({ params }: { params: Promise<{ matchId:
   if (!match || match.game_id !== "penales" || !match.opponent_id) {
     return (
       <main className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-4 px-5 py-24 text-center">
-        <p className="text-5xl">🔍</p>
+        <SearchX size={56} className="text-ice/40" />
         <h1 className="font-ui text-2xl font-extrabold text-ice">Partida no encontrada</h1>
         <p className="text-ice/60">No existe o no sos parte de ella.</p>
         <Link href="/" className="text-volt underline underline-offset-4">

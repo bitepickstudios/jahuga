@@ -52,20 +52,24 @@ Escala: título de pantalla 28–32px/800 · sección 13px uppercase tracking-wi
 
 **Mobile-first (390px):** columna única con scroll; header fijo arriba; **bottom nav fijo** (5 ítems); contenido con `pb-24` para no chocar el nav; safe-area (`env(safe-area-inset-bottom)`).
 
-**Desktop (≥1024px):** misma app, no otra. Grid de 3 columnas sobre el fondo de estadio: izquierda (Mi Grupo, amigos en línea), centro (avatar en escenario), derecha (reto pendiente, Jugar/Retar/Vs Máquina). Rail de minijuegos abajo. **El bottom nav se mantiene también en desktop** (referencia lo muestra): barra centrada, misma semántica.
+**Desktop (≥1024px):** misma app, no otra. **NO scrollea: el lobby entra en el viewport** (`100dvh − header`). Grid de 3 columnas sobre el fondo de estadio: izquierda (Mi Grupo + Misiones apiladas), centro (avatar sobre la plataforma neón + nombre), derecha (reto pendiente si hay + Jugar + Retar). El picker de minijuegos es un **modal** (no un rail). Nav en el header, sin bottom nav.
 
-Jerarquía del home (ambos breakpoints): 1) Jugar · 2) reto pendiente si existe · 3) avatar/identidad · 4) minijuegos · 5) social.
+**Mobile (<1024px):** scroll permitido. Header (logo · coins+ · campana · avatar) → avatar sobre stage → Grupo → Misiones → Jugar → Retar. Bottom nav fijo abajo.
+
+Jerarquía del home: 1) Jugar · 2) reto pendiente si existe · 3) avatar/identidad · 4) social/misiones.
 
 ## 6. Navegación
 
 **Header** (todas las pantallas con shell):
 - Izquierda: logo Jahuga (link a `/`).
-- Derecha: pill de Coins (ícono `jahuga-coin` + balance + botón `+` cuando exista tienda) → wallet (F5); campana con badge rojo (retos/notificaciones pendientes); avatar circular con online dot → `/perfil`.
+- Centro (**solo desktop ≥1024px**): nav de 5 links — `Lobby` (/) · `Amigos` (/amigos) · `Grupos` (/grupo) · `Tienda` (/skins) · `Perfil` (/perfil). Activo en volt (`bg-volt/15 text-volt`).
+- Derecha: pill de Coins (`jahuga-coin` + balance → wallet) **con botón `+`** que abre el modal de compra (mock, WhatsApp — ver §11 y D8); campana con badge rojo; avatar con online dot → `/perfil`.
 
-**Bottom nav** — 5 ítems fijos: `Lobby` (/) · `Amigos` (/amigos) · `Grupo` (/grupo) · `Skins` (/skins) · `Perfil` (/perfil).
-- Activo: ícono+label volt y barrita superior de 2px volt.
-- Inactivo: `ice/50`. Badge de novedad: punto rojo en esquina del ícono.
-- Pantallas inmersivas (`/play/*`, auth, onboarding) **no** llevan shell: el juego ocupa todo.
+**Bottom nav** — **solo mobile (`lg:hidden`)**, 5 ítems fijos con íconos lucide: `Lobby` · `Amigos` · `Grupos` · `Tienda` · `Perfil`. Activo: ícono+label volt + barrita superior de 2px volt.
+
+Pantallas inmersivas (`/play/*`, auth, onboarding) **no** llevan shell.
+
+**Iconografía:** `lucide-react` en toda la UI (tamaño 14–22 según contexto). La moneda de marca (`jahuga-coin-transparent.png`) se mantiene como PNG donde representa la divisa. Únicos emojis permitidos: la pelota ⚽ y el guante 🧤 animados de la revelación del penal (actores del juego, sin equivalente en lucide).
 
 ## 7. Componentes
 
@@ -73,10 +77,12 @@ Jerarquía del home (ambos breakpoints): 1) Jugar · 2) reto pendiente si existe
 - **Botón secundario:** `bg-navy/80 border border-ice/15 text-ice`, chevron `›` a la derecha cuando navega (Retar, Vs Máquina).
 - **Botón peligro:** borde `danger`, texto danger, fondo transparente (Rechazar).
 - **Card de reto pendiente:** header rojo con título "Reto pendiente" + chip de tiempo; cuerpo con avatar del retador, "X te retó" (+ monto en coins cuando haya apuestas); acciones Aceptar (volt) / Rechazar (peligro).
-- **Card Mi Grupo:** título + fila de avatares solapados + stats (⭐ pts, 🏆 victorias) + chevron a la página del grupo.
-- **Card de minijuego:** imagen del juego de fondo (16:10), nombre abajo. Estados: **destacado** (borde volt + chip `DESTACADO` + fila "jugando ahora"), **normal**, **bloqueado** (chip `PRÓXIMAMENTE`, candado, imagen mock desaturada). Rail horizontal con snap en mobile, fila en desktop.
-- **Coin pill:** `bg-navy/80 border-ice/10 rounded-full`, ícono moneda + cantidad 800.
-- **Marcador de tanda:** dots ⚽/❌/· sobre card navy; score en Anton.
+- **Card Mi Grupo:** título + fila de avatares solapados + stats (íconos `Users`/`Trophy`) + chevron a la página del grupo.
+- **Card de minijuego:** imagen del juego de fondo (16:10), nombre abajo. Estados: **destacado** (borde volt + chip `DESTACADO`), **bloqueado** (chip `PRÓXIMAMENTE`, `Lock`, gradiente mock). Viven en el **modal de Jugar** (rail horizontal con snap).
+- **Coin pill:** `bg-navy/80 border-ice/10 rounded-full`, moneda PNG + cantidad 800 + botón `+` volt.
+- **Botones héroe (Jugar/Retar):** Jugar = volt con degradé + highlight + sombra física (`shadow-[0_6px_0]` + `active:translate-y`) + chip con ícono `Play`. Retar = glass navy con borde volt sutil e ícono `Swords`. Nunca planos.
+- **Modales:** overlay `bg-night/70 backdrop-blur`, panel `rounded-3xl` (bottom-sheet en mobile), esc/backdrop para cerrar.
+- **Marcador de tanda:** dots (disco volt = gol · X danger = atajado/errado · hueco = pendiente) sobre card navy; score en Anton.
 - **Chips:** `DESTACADO` volt/ink · `PRÓXIMAMENTE` `bg-ice/10 text-ice/70` · timer `bg-night/60`.
 
 ## 8. Assets

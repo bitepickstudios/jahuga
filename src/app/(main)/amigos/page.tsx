@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Swords, User } from "lucide-react";
 import { getOwnProfile } from "@/features/profiles/queries";
 import { getFriends, getIncomingRequests, getOutgoingPendingNicknames } from "@/features/friends/queries";
 import { AddFriendForm } from "./AddFriendForm";
@@ -57,7 +58,9 @@ export default async function AmigosPage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={r.requester.photo_url} alt="" className="size-10 rounded-full object-cover" />
                 ) : (
-                  <span className="flex size-10 items-center justify-center rounded-full bg-navy-raised">🙂</span>
+                  <span className="flex size-10 items-center justify-center rounded-full bg-navy-raised text-ice/60">
+                    <User size={18} />
+                  </span>
                 )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-ui font-bold text-ice">
@@ -88,7 +91,9 @@ export default async function AmigosPage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={f.photo_url} alt="" className="size-10 rounded-full object-cover" />
                 ) : (
-                  <span className="flex size-10 items-center justify-center rounded-full bg-navy-raised">🙂</span>
+                  <span className="flex size-10 items-center justify-center rounded-full bg-navy-raised text-ice/60">
+                    <User size={18} />
+                  </span>
                 )}
                 <Link href={`/u/${f.nickname}`} className="min-w-0 flex-1">
                   <p className="truncate font-ui font-bold text-ice">{f.display_name ?? `@${f.nickname}`}</p>
@@ -96,9 +101,9 @@ export default async function AmigosPage() {
                 </Link>
                 <Link
                   href={`/jugar/retar?nick=${encodeURIComponent(f.nickname)}`}
-                  className="flex min-h-10 items-center rounded-xl bg-volt px-4 font-ui text-sm font-extrabold text-volt-ink transition-transform active:scale-95"
+                  className="flex min-h-10 items-center gap-1.5 rounded-xl bg-volt px-4 font-ui text-sm font-extrabold text-volt-ink transition-transform active:scale-95"
                 >
-                  ⚔️ Retar
+                  <Swords size={16} /> Retar
                 </Link>
               </li>
             ))}

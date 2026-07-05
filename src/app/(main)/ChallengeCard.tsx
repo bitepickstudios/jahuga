@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Check, Clock, Swords, Timer, X } from "lucide-react";
 import { respondChallenge } from "@/features/matches/actions";
 import { formatCoins } from "@/features/economy/config";
 
@@ -45,8 +46,9 @@ export function ChallengeCard({
         <span className="font-ui text-sm font-extrabold uppercase tracking-wide text-ice">
           Reto pendiente
         </span>
-        <span className="rounded-full bg-night/40 px-2.5 py-0.5 font-ui text-[11px] font-bold text-ice/90">
-          {mode === "live" ? "⏱ en vivo" : "🕰 async"}
+        <span className="flex items-center gap-1 rounded-full bg-night/40 px-2.5 py-0.5 font-ui text-[11px] font-bold text-ice/90">
+          {mode === "live" ? <Clock size={12} /> : <Timer size={12} />}
+          {mode === "live" ? "en vivo" : "async"}
         </span>
       </div>
       <div className="flex items-center gap-3 p-4">
@@ -54,12 +56,14 @@ export function ChallengeCard({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={challengerPhoto} alt="" className="size-12 rounded-full border border-ice/20 object-cover" />
         ) : (
-          <span className="flex size-12 items-center justify-center rounded-full bg-navy-raised text-xl">⚔️</span>
+          <span className="flex size-12 items-center justify-center rounded-full bg-navy-raised text-ice/70">
+            <Swords size={20} />
+          </span>
         )}
         <p className="text-ice">
           <strong className="font-ui font-extrabold">{challengerName}</strong> te retó a penales
           {wagerAmount !== null && (
-            <span className="text-gold"> por 🪙 {formatCoins(wagerAmount)}</span>
+            <span className="font-bold text-gold"> por {formatCoins(wagerAmount)} Coins</span>
           )}
         </p>
       </div>
@@ -68,17 +72,17 @@ export function ChallengeCard({
           type="button"
           disabled={busy}
           onClick={() => respond(true)}
-          className="flex min-h-11 flex-1 items-center justify-center rounded-xl bg-volt font-ui font-extrabold text-volt-ink transition-transform active:scale-95 disabled:opacity-60"
+          className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-xl bg-volt font-ui font-extrabold text-volt-ink transition-transform active:scale-95 disabled:opacity-60"
         >
-          ✓ Aceptar
+          <Check size={18} strokeWidth={3} /> Aceptar
         </button>
         <button
           type="button"
           disabled={busy}
           onClick={() => respond(false)}
-          className="flex min-h-11 flex-1 items-center justify-center rounded-xl border border-danger font-ui font-bold text-danger active:bg-danger/10 disabled:opacity-60"
+          className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-xl border border-danger font-ui font-bold text-danger active:bg-danger/10 disabled:opacity-60"
         >
-          ✕ Rechazar
+          <X size={18} strokeWidth={3} /> Rechazar
         </button>
       </div>
     </div>

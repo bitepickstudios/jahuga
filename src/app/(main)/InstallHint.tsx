@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Smartphone, X } from "lucide-react";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -47,9 +48,7 @@ export function InstallHint() {
 
   return (
     <div className="mx-auto mt-4 flex w-full max-w-md items-center gap-3 rounded-2xl border border-ice/10 bg-navy/90 p-3.5 px-4">
-      <span className="text-2xl" aria-hidden>
-        📲
-      </span>
+      <Smartphone size={24} className="shrink-0 text-volt" aria-hidden />
       <div className="min-w-0 flex-1">
         <p className="font-ui text-sm font-extrabold text-ice">Instalá Jahuga</p>
         <p className="text-xs text-ice/50">
@@ -76,7 +75,7 @@ export function InstallHint() {
         aria-label="Cerrar aviso de instalación"
         className="shrink-0 p-1 text-ice/40 active:text-ice"
       >
-        ✕
+        <X size={18} />
       </button>
     </div>
   );

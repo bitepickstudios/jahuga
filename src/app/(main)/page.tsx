@@ -1,15 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Flame } from "lucide-react";
 import { getAvatar, getOwnProfile } from "@/features/profiles/queries";
 import { getPendingChallenges } from "@/features/matches/queries";
 import { getMyGroup } from "@/features/groups/queries";
 import { checkinStreak } from "@/features/economy/actions";
 import { formatCoins } from "@/features/economy/config";
 import { getMissions } from "@/features/missions/queries";
-import { PlayerAvatar } from "@/features/avatars/PlayerAvatar";
+import { AvatarStage } from "@/features/avatars/AvatarStage";
 import { ChallengeCard } from "./ChallengeCard";
 import { MissionList } from "./MissionList";
+import { GroupCard } from "./GroupCard";
+import { LobbyActions } from "./LobbyActions";
 import { InstallHint } from "./InstallHint";
 
 // ponytail: sin env de Supabase la app cae a la landing anónima.
@@ -30,195 +33,69 @@ export default async function Home() {
   ]);
   const skinId = ((avatar?.equipped as Record<string, string | null>)?.skin as string) ?? "albirroja";
 
+  const challengeCards = challenges.map((c) => (
+    <ChallengeCard
+      key={c.id}
+      matchId={c.id}
+      challengerName={c.challenger?.display_name ?? `@${c.challenger?.nickname}`}
+      challengerPhoto={c.challenger?.photo_url ?? null}
+      mode={c.mode}
+      wagerAmount={c.wager_amount}
+    />
+  ));
+
+  const groupCard = <GroupCard myGroup={myGroup} />;
+  const missionsCard =
+    missions.length > 0 ? (
+      <section className="rounded-2xl border border-ice/10 bg-navy/80 p-4 backdrop-blur">
+        <h2 className="mb-3 font-ui text-base font-extrabold text-ice">Misiones de hoy</h2>
+        <MissionList missions={missions} />
+      </section>
+    ) : null;
+
   return (
-    <main className="bg-stadium -mb-24 flex-1 pb-24">
+    <main className="bg-stadium relative flex-1 lg:h-[calc(100dvh-4rem)] lg:overflow-hidden">
       {streak && streak.reward > 0 && (
-        <div className="mx-auto mt-3 w-fit rounded-full border border-gold/40 bg-navy/90 px-4 py-1.5 font-ui text-sm font-bold text-gold">
-          🔥 Día {streak.days} de racha: +{formatCoins(streak.reward)} Coins
+        <div className="pointer-events-none absolute inset-x-0 top-3 z-10 mx-auto flex w-fit items-center gap-1.5 rounded-full border border-gold/40 bg-navy/90 px-4 py-1.5 font-ui text-sm font-bold text-gold">
+          <Flame size={16} /> Día {streak.days} de racha: +{formatCoins(streak.reward)} Coins
         </div>
       )}
-      <div className="mx-auto flex w-full max-w-6xl flex-col px-4 py-5 lg:grid lg:grid-cols-[300px_1fr_340px] lg:items-start lg:gap-6">
-        <aside className="order-3 mt-6 lg:order-1 lg:mt-0">
-          <Link
-            href="/grupo"
-            className="block rounded-2xl border border-ice/10 bg-navy/80 p-4 backdrop-blur active:bg-navy-raised/80"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="font-ui text-base font-extrabold text-ice">
-                {myGroup ? myGroup.group.name : "Mi Grupo"}
-              </h2>
-              <span className="text-ice/40">›</span>
-            </div>
-            {myGroup ? (
-              <>
-                <div className="mt-2 flex -space-x-2">
-                  {myGroup.members.slice(0, 5).map((m) =>
-                    m.photo_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        key={m.id}
-                        src={m.photo_url}
-                        alt=""
-                        className="size-9 rounded-full border-2 border-navy object-cover"
-                      />
-                    ) : (
-                      <span
-                        key={m.id}
-                        className="flex size-9 items-center justify-center rounded-full border-2 border-navy bg-navy-raised text-sm"
-                      >
-                        🙂
-                      </span>
-                    ),
-                  )}
-                </div>
-                <div className="mt-3 flex gap-4 text-sm text-ice/70">
-                  <span>👥 {myGroup.members.length}</span>
-                  <span>🏆 {myGroup.totals.won} victorias</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <p className="mt-1 text-sm text-ice/50">
-                  Armá tu grupo de amigos y compitan entre todos.
-                </p>
-                <span className="mt-3 inline-block rounded-full bg-volt px-3 py-1 font-ui text-[11px] font-extrabold uppercase tracking-wide text-volt-ink">
-                  Crear grupo
-                </span>
-              </>
-            )}
-          </Link>
+
+      {/* ── Desktop: 3 columnas, entra en viewport, sin scroll ── */}
+      <div className="mx-auto hidden h-full w-full max-w-6xl grid-cols-[300px_1fr_340px] items-center gap-6 px-4 lg:grid">
+        <aside className="flex flex-col gap-4">
+          {groupCard}
+          {missionsCard}
         </aside>
 
-        {/* Escenario: el avatar en grande */}
-        <section className="order-1 flex flex-col items-center lg:order-2">
-          {challenges.length > 0 && (
-            <div className="mb-4 w-full max-w-md lg:hidden">
-              {challenges.map((c) => (
-                <ChallengeCard
-                  key={c.id}
-                  matchId={c.id}
-                  challengerName={c.challenger?.display_name ?? `@${c.challenger?.nickname}`}
-                  challengerPhoto={c.challenger?.photo_url ?? null}
-                  mode={c.mode}
-                  wagerAmount={c.wager_amount}
-                />
-              ))}
-            </div>
-          )}
-
-          <div className="relative flex flex-col items-center pt-2">
-            <PlayerAvatar photoUrl={profile.photo_url} pose="idle" skinId={skinId} className="h-72 w-56 drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)] lg:h-96 lg:w-72" />
-            {/* Podio de luz */}
-            <div className="pointer-events-none -mt-6 h-10 w-64 rounded-[100%] bg-[radial-gradient(ellipse_at_center,rgba(61,109,255,0.4),transparent_70%)] lg:w-80" />
-          </div>
-          <p className="mt-1 font-ui text-lg font-bold text-ice/80">
+        <section className="flex h-full flex-col items-center justify-center">
+          <AvatarStage photoUrl={profile.photo_url} skinId={skinId} className="w-[400px] max-w-full" />
+          <p className="mt-8 font-ui text-lg font-bold text-ice/80">
             {profile.display_name ?? `@${profile.nickname}`}
           </p>
         </section>
 
-        {/* Acciones */}
-        <aside className="order-2 mt-5 flex flex-col gap-3 lg:order-3 lg:mt-0">
-          {challenges.length > 0 && (
-            <div className="hidden lg:block">
-              {challenges.map((c) => (
-                <ChallengeCard
-                  key={c.id}
-                  matchId={c.id}
-                  challengerName={c.challenger?.display_name ?? `@${c.challenger?.nickname}`}
-                  challengerPhoto={c.challenger?.photo_url ?? null}
-                  mode={c.mode}
-                  wagerAmount={c.wager_amount}
-                />
-              ))}
-            </div>
-          )}
-
-          <Link
-            href="/jugar"
-            className="flex min-h-16 items-center justify-center gap-2 rounded-2xl bg-volt font-ui text-2xl font-extrabold text-volt-ink shadow-[0_5px_0_rgba(0,0,0,0.4)] transition-transform active:translate-y-0.5 active:shadow-none"
-          >
-            <PlaySolid /> Jugar
-          </Link>
-          <Link
-            href="/jugar/retar"
-            className="flex min-h-13 items-center justify-between rounded-xl border border-ice/15 bg-navy/80 px-5 py-3.5 font-ui text-lg font-bold text-ice backdrop-blur active:bg-navy-raised/80"
-          >
-            <span>🤝 Retar</span>
-            <span className="text-ice/40">›</span>
-          </Link>
-          <Link
-            href="/play/local"
-            className="flex min-h-13 items-center justify-between rounded-xl border border-ice/15 bg-navy/80 px-5 py-3.5 font-ui text-lg font-bold text-ice backdrop-blur active:bg-navy-raised/80"
-          >
-            <span>🤖 Vs Máquina</span>
-            <span className="text-ice/40">›</span>
-          </Link>
+        <aside className="flex flex-col gap-3">
+          {challengeCards}
+          <LobbyActions />
         </aside>
       </div>
 
-      {/* Misiones del día */}
-      {missions.length > 0 && (
-        <section className="mx-auto w-full max-w-6xl px-4 pt-2">
-          <h2 className="mb-3 font-ui text-xl font-extrabold text-ice">Misiones de hoy</h2>
-          <MissionList missions={missions} />
-        </section>
-      )}
-
-      <InstallHint />
-
-      {/* Minijuegos */}
-      <section className="mx-auto w-full max-w-6xl px-4 pb-8 pt-4">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="font-ui text-xl font-extrabold text-ice">Minijuegos</h2>
-          <Link href="/jugar" className="font-ui text-sm font-bold text-volt">
-            Ver todos ›
-          </Link>
+      {/* ── Mobile: stack con scroll ── */}
+      <div className="flex flex-col gap-4 px-4 py-5 lg:hidden">
+        {challengeCards}
+        <AvatarStage photoUrl={profile.photo_url} skinId={skinId} className="mx-auto mt-6 w-full max-w-xs" />
+        <p className="mt-6 text-center font-ui text-lg font-bold text-ice/80">
+          {profile.display_name ?? `@${profile.nickname}`}
+        </p>
+        {groupCard}
+        {missionsCard}
+        <LobbyActions />
+        <div className="lg:hidden">
+          <InstallHint />
         </div>
-        <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 lg:grid lg:grid-cols-4 lg:overflow-visible">
-          <Link
-            href="/jugar"
-            className="relative w-64 shrink-0 snap-start overflow-hidden rounded-2xl border-2 border-volt shadow-[0_0_24px_rgba(200,245,49,0.25)] lg:w-auto"
-          >
-            <Image
-              src="/assets/jahuga__game_bg_penaltys.png"
-              alt=""
-              width={512}
-              height={320}
-              className="h-40 w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-night/95 via-night/20 to-transparent" />
-            <span className="absolute left-3 top-3 rounded-full bg-volt px-3 py-1 font-ui text-[11px] font-extrabold uppercase tracking-wide text-volt-ink">
-              Destacado
-            </span>
-            <p className="absolute bottom-3 left-3 font-ui text-lg font-extrabold text-ice">
-              Tandas de Penales
-            </p>
-          </Link>
-
-          <MockGameCard emoji="🧠" name="Trivia" hue="from-[#1a2f6e]" />
-          <MockGameCard emoji="🃏" name="Cartas RPG" hue="from-[#3a1a6e]" />
-          <MockGameCard emoji="🏆" name="Modo Torneo" hue="from-[#6e4a1a]" />
-        </div>
-      </section>
+      </div>
     </main>
-  );
-}
-
-/** Card bloqueada con mock hasta tener el arte real del juego. */
-function MockGameCard({ emoji, name, hue }: { emoji: string; name: string; hue: string }) {
-  return (
-    <div className={`relative flex h-40 w-64 shrink-0 snap-start flex-col items-center justify-center overflow-hidden rounded-2xl border border-ice/10 bg-gradient-to-br ${hue} to-night lg:w-auto`}>
-      <span className="absolute left-3 top-3 rounded-full bg-ice/10 px-3 py-1 font-ui text-[11px] font-bold uppercase tracking-wide text-ice/70">
-        Próximamente
-      </span>
-      <span className="text-4xl opacity-60" aria-hidden>
-        {emoji}
-      </span>
-      <span className="mt-1 flex size-8 items-center justify-center rounded-full bg-night/60 text-ice/60">
-        🔒
-      </span>
-      <p className="mt-1 font-ui text-base font-extrabold text-ice/70">{name}</p>
-    </div>
   );
 }
 
@@ -254,13 +131,5 @@ function AnonHome() {
         </Link>
       </div>
     </main>
-  );
-}
-
-function PlaySolid() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-      <path d="M8 5.5v13l11-6.5-11-6.5Z" fill="#101800" />
-    </svg>
   );
 }

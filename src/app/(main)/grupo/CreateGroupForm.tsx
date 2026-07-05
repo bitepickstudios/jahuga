@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { Button, Input, Label, TextField } from "@heroui/react";
+import { Shield } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { createGroup, type GroupFormState } from "@/features/groups/actions";
 
@@ -41,8 +42,8 @@ export function CreateGroupForm({ userId }: { userId: string }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={imageUrl} alt="" className="size-16 rounded-xl object-cover" />
         ) : (
-          <span className="flex size-16 items-center justify-center rounded-xl border border-dashed border-ice/25 text-2xl">
-            🛡️
+          <span className="flex size-16 items-center justify-center rounded-xl border border-dashed border-ice/25 text-ice/50">
+            <Shield size={28} />
           </span>
         )}
         <label className="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-xl border border-ice/20 text-sm text-ice/80 active:bg-ice/5">

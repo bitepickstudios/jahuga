@@ -121,7 +121,7 @@ function OptionToggle({
           type="button"
           aria-pressed={selected === option.value}
           onClick={() => onSelect(option.value)}
-          className={`min-h-16 rounded-md border px-3 py-2 text-left transition-colors ${
+          className={`min-h-16 rounded-xl border px-3 py-2 text-left transition-colors ${
             selected === option.value
               ? "border-ice bg-ice/10"
               : "border-ice/20 active:bg-ice/5"

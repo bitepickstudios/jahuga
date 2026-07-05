@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Cake, SearchX } from "lucide-react";
 import { getAvatar, getProfileByNickname } from "@/features/profiles/queries";
 import { getProfileStats } from "@/features/matches/queries";
 import { ageFrom, localDate } from "@/features/profiles/types";
@@ -18,7 +19,7 @@ export default async function PublicProfilePage({
   if (!profile) {
     return (
       <main className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-4 px-5 py-24 text-center">
-        <p className="text-5xl">🕵️</p>
+        <SearchX size={56} className="text-ice/40" />
         <h1 className="font-ui text-2xl font-extrabold text-ice">Perfil no disponible</h1>
         <p className="text-ice/60">No existe o es privado. Si es tu amigo, pedile que te agregue.</p>
         <Link href="/" className="text-volt underline underline-offset-4">
@@ -44,11 +45,15 @@ export default async function PublicProfilePage({
           {profile.display_name}
           {age !== null && ` · ${age} años`}
         </p>
-        {birthday && <p className="text-sm text-ice/40">🎂 {birthday}</p>}
+        {birthday && (
+          <p className="flex items-center gap-1.5 text-sm text-ice/40">
+            <Cake size={14} /> {birthday}
+          </p>
+        )}
       </section>
 
       {profile.iconic_phrases.length > 0 && (
-        <section className="rounded-md border border-ice/15 p-4">
+        <section className="rounded-2xl border border-ice/15 p-4">
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ice/50">
             Frases icónicas
           </h2>

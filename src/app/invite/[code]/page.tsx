@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Link2, User } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -19,7 +20,7 @@ export default async function InvitePage({ params }: { params: Promise<{ code: s
   if (!owner) {
     return (
       <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center justify-center gap-4 px-6 text-center">
-        <p className="text-5xl">🔗</p>
+        <Link2 size={56} className="text-ice/40" />
         <h1 className="font-ui text-2xl font-extrabold text-ice">Link inválido</h1>
         <p className="text-ice/60">Esta invitación no existe o venció. Pedile a tu amigo el link de nuevo.</p>
         <Link href="/" className="font-ui font-bold text-volt">Ir a Jahuga ›</Link>
@@ -52,7 +53,9 @@ export default async function InvitePage({ params }: { params: Promise<{ code: s
         // eslint-disable-next-line @next/next/no-img-element
         <img src={owner.photo_url} alt="" className="size-24 rounded-full border-2 border-volt object-cover" />
       ) : (
-        <span className="flex size-24 items-center justify-center rounded-full border-2 border-volt bg-navy text-4xl">⚽</span>
+        <span className="flex size-24 items-center justify-center rounded-full border-2 border-volt bg-navy text-ice/60">
+          <User size={40} />
+        </span>
       )}
       <h1 className="font-ui text-3xl font-extrabold text-ice">{ownerName} te invita a jugar</h1>
       <p className="max-w-xs text-ice/60">
