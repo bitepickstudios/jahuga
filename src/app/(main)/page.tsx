@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Flame } from "lucide-react";
+import { Flame, Target } from "lucide-react";
 import { getAvatar, getOwnProfile } from "@/features/profiles/queries";
 import { getPendingChallenges } from "@/features/matches/queries";
 import { getMyGroup } from "@/features/groups/queries";
@@ -47,8 +47,13 @@ export default async function Home() {
   const groupCard = <GroupCard myGroup={myGroup} />;
   const missionsCard =
     missions.length > 0 ? (
-      <section className="rounded-2xl border border-ice/10 bg-navy/80 p-4 backdrop-blur">
-        <h2 className="mb-3 font-ui text-base font-extrabold text-ice">Misiones de hoy</h2>
+      <section className="overflow-hidden rounded-2xl border border-ice/10 bg-gradient-to-b from-navy/85 to-navy/55 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur">
+        <div className="mb-3 flex items-center gap-2.5">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-volt/15 text-volt">
+            <Target size={17} />
+          </span>
+          <h2 className="font-ui text-base font-extrabold text-ice">Misiones de hoy</h2>
+        </div>
         <MissionList missions={missions} />
       </section>
     ) : null;

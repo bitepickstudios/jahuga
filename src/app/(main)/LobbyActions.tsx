@@ -23,12 +23,19 @@ export function LobbyActions() {
         <span className="relative">JUGAR</span>
       </button>
 
+      {/* Borde en degradé: wrapper p-px con gradiente + interior navy */}
       <Link
         href="/jugar/retar"
-        className="group flex min-h-12 items-center justify-center gap-2 rounded-xl border border-volt/25 bg-navy/80 px-6 font-ui text-base font-bold text-ice shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_4px_16px_rgba(0,0,0,0.3)] backdrop-blur transition-colors hover:border-volt/50 active:bg-navy-raised/80"
+        className="group relative rounded-xl bg-gradient-to-r from-volt/50 via-ice/15 to-volt/50 p-px shadow-[0_6px_18px_rgba(0,0,0,0.35)] transition-shadow hover:shadow-[0_6px_22px_rgba(200,245,49,0.25)]"
       >
-        <Swords size={18} className="text-volt" />
-        RETAR
+        <span className="relative flex min-h-12 items-center justify-center gap-2.5 overflow-hidden rounded-[11px] bg-gradient-to-b from-navy-raised to-navy px-6 font-ui text-base font-extrabold uppercase tracking-wide text-ice">
+          {/* Sheen diagonal en hover */}
+          <span className="pointer-events-none absolute -inset-y-4 -left-1/3 w-1/3 skew-x-[-20deg] bg-white/10 opacity-0 transition-all duration-500 group-hover:left-[120%] group-hover:opacity-100" />
+          <span className="flex size-7 items-center justify-center rounded-lg bg-volt/15 text-volt">
+            <Swords size={17} />
+          </span>
+          Retar
+        </span>
       </Link>
 
       <MinigamePickerModal open={pickerOpen} onClose={() => setPickerOpen(false)} />

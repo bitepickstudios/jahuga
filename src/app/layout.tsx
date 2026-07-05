@@ -1,17 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Geist, Manrope } from "next/font/google";
+import { Anton, Poppins } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
-});
-
-const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
-  weight: ["500", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const anton = Anton({
@@ -22,7 +17,7 @@ const anton = Anton({
 
 export const metadata: Metadata = {
   title: "Jahuga",
-  description: "Minijuegos entre amigos. Retá, apostá Coins y ganá reputación.",
+  description: "Minijuegos entre amigos. Retá, apostá y ganá.",
 };
 
 export const viewport: Viewport = {
@@ -39,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${manrope.variable} ${anton.variable} dark h-full antialiased`}
+      className={`${poppins.variable} ${anton.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}

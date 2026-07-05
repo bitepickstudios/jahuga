@@ -31,7 +31,7 @@ export function AppHeader({
 
   return (
     <header className="absolute inset-x-0 top-0 z-40">
-      <div className="mx-auto flex h-16 w-full items-center justify-between gap-4 px-16">
+      <div className="relative mx-auto flex h-16 w-full items-center justify-between gap-4 px-16">
         <Link href="/" aria-label="Jahuga — inicio" className="shrink-0">
           <Image src="/assets/logo.svg" alt="Jahuga" width={112} height={28} priority />
         </Link>
@@ -39,7 +39,7 @@ export function AppHeader({
         {profile && (
           <nav
             aria-label="Secciones"
-            className="hidden items-center gap-1 rounded-2xl border border-ice/10 bg-navy/70 p-1.5 backdrop-blur lg:flex"
+            className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-2xl border border-ice/10 bg-navy/70 p-1.5 backdrop-blur lg:flex"
           >
             {NAV.map(({ href, label, icon: Icon }) => {
               const active = href === "/" ? pathname === "/" : pathname.startsWith(href);

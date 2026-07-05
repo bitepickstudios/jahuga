@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight, Trophy, Users } from "lucide-react";
+import { ChevronRight, Shield, Trophy, Users } from "lucide-react";
 import type { MyGroup } from "@/features/groups/queries";
 
 /** Card de Mi Grupo para el lobby (izquierda). */
@@ -7,13 +7,16 @@ export function GroupCard({ myGroup }: { myGroup: MyGroup | null }) {
   return (
     <Link
       href="/grupo"
-      className="block rounded-2xl border border-ice/10 bg-navy/80 p-4 backdrop-blur transition-colors hover:border-ice/20 active:bg-navy-raised/80"
+      className="group block overflow-hidden rounded-2xl border border-ice/10 bg-gradient-to-b from-navy/85 to-navy/55 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur transition-colors hover:border-volt/30 active:bg-navy-raised/70"
     >
-      <div className="flex items-center justify-between">
-        <h2 className="truncate font-ui text-base font-extrabold text-ice">
+      <div className="flex items-center gap-2.5">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-volt/15 text-volt">
+          <Shield size={17} />
+        </span>
+        <h2 className="min-w-0 flex-1 truncate font-ui text-base font-extrabold text-ice">
           {myGroup ? myGroup.group.name : "Mi Grupo"}
         </h2>
-        <ChevronRight size={18} className="shrink-0 text-ice/40" />
+        <ChevronRight size={18} className="shrink-0 text-ice/40 transition-transform group-hover:translate-x-0.5" />
       </div>
 
       {myGroup ? (
