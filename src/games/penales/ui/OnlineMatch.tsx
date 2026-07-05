@@ -42,10 +42,14 @@ export interface PlayerInfo {
 
 /** Actions de plataforma inyectadas por el shell (games/* no importa features/*). */
 export interface MatchActions {
-  snapshot: () => Promise<{ match: MatchSnapshot | null; moves: MoveRow[] }>;
+  snapshot: () => Promise<{ match: MatchSnapshot | null; moves: MoveRow[]; wagerAmount: number | null }>;
   commit: (move: RoundMove) => Promise<{ error: string | null }>;
   respond: (accept: boolean) => Promise<{ error: string | null }>;
   rematch: () => Promise<{ error: string | null; newMatchId?: string }>;
+}
+
+function coins(n: number): string {
+  return n.toLocaleString("es-PY");
 }
 
 function buildVisibleState(match: MatchSnapshot, moves: MoveRow[]) {
@@ -63,17 +67,20 @@ export function OnlineMatch({
   players,
   initialMatch,
   initialMoves,
+  initialWager = null,
   actions,
 }: {
   meId: string;
   players: Record<string, PlayerInfo>;
   initialMatch: MatchSnapshot;
   initialMoves: MoveRow[];
+  initialWager?: number | null;
   actions: MatchActions;
 }) {
   const router = useRouter();
   const [match, setMatch] = useState(initialMatch);
   const [moves, setMoves] = useState(initialMoves);
+  const [wager, setWager] = useState<number | null>(initialWager);
   const [draft, setDraft] = useState<Draft>(EMPTY_DRAFT);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -87,6 +94,7 @@ export function OnlineMatch({
     const snap = await actions.snapshot();
     if (snap.match) setMatch(snap.match);
     setMoves(snap.moves);
+    setWager(snap.wagerAmount);
   }, [actions]);
 
   useMatchChannel(match.id, refresh);
@@ -164,6 +172,11 @@ export function OnlineMatch({
           <p className="text-ice/60">
             Tanda de penales · {match.mode === "live" ? "en vivo" : "cuando puedan"}
           </p>
+          {wager !== null && (
+            <p className="rounded-full border border-gold/40 bg-navy/80 px-4 py-1.5 font-ui text-sm font-bold text-gold">
+              🪙 {coins(wager)} por cabeza — se descuentan al aceptar
+            </p>
+          )}
           <Button variant="primary" size="lg" fullWidth className="min-h-12 max-w-sm" isDisabled={busy} onPress={() => respond(true)}>
             Aceptar el reto
           </Button>
@@ -219,6 +232,15 @@ export function OnlineMatch({
             {match.scores[order[0]]} – {match.scores[order[1]]}
           </p>
         )}
+        {wager !== null && (
+          <p className={`font-ui text-xl font-extrabold ${match.winner_id === null ? "text-ice/60" : iWon ? "text-volt" : "text-danger"}`}>
+            {match.winner_id === null
+              ? "Apuesta devuelta"
+              : iWon
+                ? `+${coins(wager)} Coins`
+                : `−${coins(wager)} Coins`}
+          </p>
+        )}
         <Button variant="primary" size="lg" fullWidth className="min-h-12 max-w-sm" isDisabled={busy} onPress={startRematch}>
           Revancha
         </Button>
@@ -263,6 +285,11 @@ export function OnlineMatch({
               results={results}
               scores={scores}
             />
+            {wager !== null && match.status === "active" && (
+              <p className="rounded-full bg-navy/80 px-3 py-1 font-ui text-xs font-bold text-gold">
+                Pozo: 🪙 {coins(wager * 2)}
+              </p>
+            )}
             {inSuddenDeath && (
               <p className="font-display text-lg uppercase tracking-wide text-danger">Muerte súbita</p>
             )}

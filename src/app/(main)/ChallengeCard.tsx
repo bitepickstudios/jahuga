@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { respondChallenge } from "@/features/matches/actions";
+import { formatCoins } from "@/features/economy/config";
 
 /** Card de reto pendiente (DESIGN.md §7): header rojo, aceptar/rechazar inline. */
 export function ChallengeCard({
@@ -10,11 +11,13 @@ export function ChallengeCard({
   challengerName,
   challengerPhoto,
   mode,
+  wagerAmount = null,
 }: {
   matchId: string;
   challengerName: string;
   challengerPhoto: string | null;
   mode: "live" | "async";
+  wagerAmount?: number | null;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -55,6 +58,9 @@ export function ChallengeCard({
         )}
         <p className="text-ice">
           <strong className="font-ui font-extrabold">{challengerName}</strong> te retó a penales
+          {wagerAmount !== null && (
+            <span className="text-gold"> por 🪙 {formatCoins(wagerAmount)}</span>
+          )}
         </p>
       </div>
       <div className="flex gap-2 px-4 pb-4">

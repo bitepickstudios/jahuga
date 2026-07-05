@@ -1,13 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
+import { formatCoins } from "@/features/economy/config";
 
 /** Header del shell (DESIGN.md §6): logo, coins, campana, avatar. */
 export function AppHeader({
   profile,
   pendingCount = 0,
+  balance = null,
 }: {
   profile: { nickname: string; photo_url: string | null } | null;
   pendingCount?: number;
+  balance?: number | null;
 }) {
   return (
     <header className="sticky top-0 z-40 border-b border-ice/5 bg-night/70 backdrop-blur">
@@ -18,11 +21,16 @@ export function AppHeader({
 
         {profile ? (
           <div className="flex items-center gap-2.5">
-            {/* Coin pill — balance real llega con la economía (F5) */}
-            <div className="flex h-10 items-center gap-1.5 rounded-full border border-ice/10 bg-navy/80 pl-1.5 pr-3">
-              <Image src="/assets/jahuga-coin-transparent.png" alt="Coins" width={26} height={26} />
-              <span className="font-ui text-sm font-extrabold text-ice">0</span>
-            </div>
+            <Link
+              href="/wallet"
+              aria-label="Tu wallet de Coins"
+              className="flex h-10 items-center gap-1.5 rounded-full border border-ice/10 bg-navy/80 pl-1.5 pr-3 active:bg-navy-raised/80"
+            >
+              <Image src="/assets/jahuga-coin-transparent.png" alt="" width={26} height={26} />
+              <span className="font-ui text-sm font-extrabold text-ice">
+                {balance === null ? "—" : formatCoins(balance)}
+              </span>
+            </Link>
 
             <Link
               href="/"

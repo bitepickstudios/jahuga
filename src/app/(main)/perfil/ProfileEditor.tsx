@@ -30,6 +30,7 @@ export function ProfileEditor({
   const [newPhrase, setNewPhrase] = useState("");
   const [isPublic, setIsPublic] = useState(profile.is_public);
   const [photoUrl, setPhotoUrl] = useState(avatar?.photo_crop_url ?? profile.photo_url);
+  const skinId = ((avatar?.equipped as Record<string, string | null>)?.skin as string) ?? "albirroja";
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -94,7 +95,7 @@ export function ProfileEditor({
       </header>
 
       <section className="flex flex-col items-center gap-2 text-center">
-        <PlayerAvatar photoUrl={photoUrl} pose="idle" className="h-52 w-40" />
+        <PlayerAvatar photoUrl={photoUrl} pose="idle" skinId={skinId} className="h-52 w-40" />
         <h1 className="font-ui text-2xl font-extrabold text-ice">@{profile.nickname}</h1>
         <p className="text-ice/70">
           {profile.display_name}

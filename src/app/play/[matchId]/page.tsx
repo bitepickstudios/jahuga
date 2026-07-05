@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getOwnProfile } from "@/features/profiles/queries";
-import { getMatch, getMatchPlayers, getVisibleMoves } from "@/features/matches/queries";
+import { getMatch, getMatchPlayers, getVisibleMoves, getWagerAmount } from "@/features/matches/queries";
 import { commitMove, getMatchSnapshot, rematch, respondChallenge } from "@/features/matches/actions";
 import { OnlineMatch, type MatchSnapshot, type MoveRow } from "@/games/penales/ui/OnlineMatch";
 import Link from "next/link";
@@ -27,7 +27,11 @@ export default async function MatchPage({ params }: { params: Promise<{ matchId:
     );
   }
 
-  const [players, moves] = await Promise.all([getMatchPlayers(match), getVisibleMoves(matchId)]);
+  const [players, moves, wagerAmount] = await Promise.all([
+    getMatchPlayers(match),
+    getVisibleMoves(matchId),
+    getWagerAmount(matchId),
+  ]);
 
   return (
     <OnlineMatch
@@ -35,10 +39,12 @@ export default async function MatchPage({ params }: { params: Promise<{ matchId:
       players={players}
       initialMatch={match as MatchSnapshot}
       initialMoves={moves as MoveRow[]}
+      initialWager={wagerAmount}
       actions={{
         snapshot: getMatchSnapshot.bind(null, matchId) as () => Promise<{
           match: MatchSnapshot | null;
           moves: MoveRow[];
+          wagerAmount: number | null;
         }>,
         commit: commitMove.bind(null, matchId),
         respond: respondChallenge.bind(null, matchId),

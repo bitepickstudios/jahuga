@@ -29,8 +29,10 @@ export async function challengeUser(
 
   const nickname = String(formData.get("nickname") ?? "").trim().toLowerCase().replace(/^@/, "");
   const mode = String(formData.get("mode") ?? "live");
+  const amount = Number(formData.get("amount") ?? 0);
   if (!nickname) return { error: "Escribí el nickname del rival." };
   if (mode !== "live" && mode !== "async") return { error: "Modo inválido." };
+  if (!Number.isInteger(amount) || amount < 0) return { error: "Monto de apuesta inválido." };
 
   const admin = createAdminClient();
   const { data: rival } = await admin
@@ -40,6 +42,14 @@ export async function challengeUser(
     .maybeSingle();
   if (!rival) return { error: `No existe nadie con el nickname @${nickname}.` };
   if (rival.id === user.id) return { error: "No podés retarte a vos mismo (todavía)." };
+
+  if (amount > 0) {
+    const supabase = await createClient();
+    const { data: wallet } = await supabase.from("wallets").select("balance").maybeSingle();
+    if (!wallet || Number(wallet.balance) < amount) {
+      return { error: "No te alcanzan las Coins para esa apuesta." };
+    }
+  }
 
   const { data: match, error } = await admin
     .from("matches")
@@ -52,6 +62,16 @@ export async function challengeUser(
     .select("id")
     .single();
   if (error || !match) return { error: "No se pudo crear el reto. Probá de nuevo." };
+
+  if (amount > 0) {
+    const { error: wagerError } = await admin
+      .from("wagers")
+      .insert({ match_id: match.id, amount });
+    if (wagerError) {
+      await admin.from("matches").delete().eq("id", match.id);
+      return { error: "No se pudo crear la apuesta. Probá de nuevo." };
+    }
+  }
 
   redirect(`/play/${match.id}`);
 }
@@ -68,7 +88,16 @@ export async function respondChallenge(
   if (!match || match.opponent_id !== user.id) return { error: "Este reto no es para vos." };
   if (match.status !== "pending") return { error: "Este reto ya no está pendiente." };
 
-  const { error } = await admin
+  if (accept) {
+    // Escrow primero (idempotente; no-op si es amistoso). Si a alguien no le
+    // alcanzan las Coins, el check de wallets corta acá y el reto sigue pendiente.
+    const { error: escrowError } = await admin.rpc("fn_escrow_wager", { p_match: matchId });
+    if (escrowError) {
+      return { error: "A alguno de los dos no le alcanzan las Coins para la apuesta." };
+    }
+  }
+
+  const { data: updated, error } = await admin
     .from("matches")
     .update(
       accept
@@ -76,8 +105,17 @@ export async function respondChallenge(
         : { status: "declined" },
     )
     .eq("id", matchId)
-    .eq("status", "pending");
+    .eq("status", "pending")
+    .select("id");
   if (error) return { error: "No se pudo responder el reto." };
+  if (accept && !updated?.length) {
+    // Carrera rara (se rechazó/expiró entre medio): devolver el escrow
+    await admin.rpc("fn_refund_wager", { p_match: matchId });
+    return { error: "El reto ya no estaba pendiente." };
+  }
+  if (!accept) {
+    await admin.rpc("fn_refund_wager", { p_match: matchId }); // no-op si nada escrowado
+  }
 
   revalidatePath(`/play/${matchId}`);
   revalidatePath("/");
@@ -136,6 +174,12 @@ export async function commitMove(
       })
       .eq("id", matchId)
       .eq("status", "active");
+    // Payout del pozo en la misma resolución (no-op si es amistosa)
+    if (outcome.winnerId) {
+      await admin.rpc("fn_settle_wager", { p_match: matchId, p_winner: outcome.winnerId });
+    } else {
+      await admin.rpc("fn_refund_wager", { p_match: matchId }); // empate: se devuelve
+    }
     await admin.rpc("refresh_profile_stats");
   }
 
@@ -149,13 +193,19 @@ export async function commitMove(
 export async function getMatchSnapshot(matchId: string): Promise<{
   match: Match | null;
   moves: MatchMoveRow[];
+  wagerAmount: number | null;
 }> {
   const supabase = await createClient();
-  const [{ data: match }, { data: moves }] = await Promise.all([
+  const [{ data: match }, { data: moves }, { data: wager }] = await Promise.all([
     supabase.from("matches").select("*").eq("id", matchId).maybeSingle(),
     supabase.from("match_moves").select("*").eq("match_id", matchId),
+    supabase.from("wagers").select("amount").eq("match_id", matchId).maybeSingle(),
   ]);
-  return { match: match as Match | null, moves: (moves ?? []) as MatchMoveRow[] };
+  return {
+    match: match as Match | null,
+    moves: (moves ?? []) as MatchMoveRow[],
+    wagerAmount: wager ? Number(wager.amount) : null,
+  };
 }
 
 /** Revancha: nuevo reto contra el mismo rival, mismo modo. */
@@ -186,5 +236,11 @@ export async function rematch(matchId: string): Promise<{ error: string | null; 
     .select("id")
     .single();
   if (error || !created) return { error: "No se pudo crear la revancha." };
+
+  // La revancha repite la apuesta original (si había)
+  const { data: wager } = await admin.from("wagers").select("amount").eq("match_id", matchId).maybeSingle();
+  if (wager) {
+    await admin.from("wagers").insert({ match_id: created.id, amount: wager.amount });
+  }
   return { error: null, newMatchId: created.id };
 }

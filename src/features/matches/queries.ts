@@ -31,8 +31,10 @@ export async function getMatchPlayers(match: Match): Promise<Record<string, Matc
   return Object.fromEntries(((data ?? []) as MatchPlayer[]).map((p) => [p.id, p]));
 }
 
-/** Retos pendientes recibidos por el usuario actual. */
-export async function getPendingChallenges(): Promise<(Match & { challenger: MatchPlayer })[]> {
+/** Retos pendientes recibidos por el usuario actual (con apuesta si hay). */
+export async function getPendingChallenges(): Promise<
+  (Match & { challenger: MatchPlayer; wager_amount: number | null })[]
+> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -40,7 +42,7 @@ export async function getPendingChallenges(): Promise<(Match & { challenger: Mat
   if (!user) return [];
   const { data: matches } = await supabase
     .from("matches")
-    .select("*")
+    .select("*, wagers(amount)")
     .eq("opponent_id", user.id)
     .eq("status", "pending")
     .order("created_at", { ascending: false });
@@ -52,7 +54,18 @@ export async function getPendingChallenges(): Promise<(Match & { challenger: Mat
     .select("id, nickname, display_name, photo_url")
     .in("id", matches.map((m) => m.challenger_id));
   const byId = Object.fromEntries(((profiles ?? []) as MatchPlayer[]).map((p) => [p.id, p]));
-  return (matches as Match[]).map((m) => ({ ...m, challenger: byId[m.challenger_id] }));
+  return (matches as (Match & { wagers: { amount: number } | null })[]).map((m) => ({
+    ...m,
+    challenger: byId[m.challenger_id],
+    wager_amount: m.wagers ? Number(m.wagers.amount) : null,
+  }));
+}
+
+/** Monto apostado de una partida (vía RLS de participante), o null si es amistosa. */
+export async function getWagerAmount(matchId: string): Promise<number | null> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("wagers").select("amount").eq("match_id", matchId).maybeSingle();
+  return data ? Number(data.amount) : null;
 }
 
 export interface ProfileStats {

@@ -38,7 +38,7 @@ export default async function PublicProfilePage({
   return (
     <main className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-6">
       <section className="flex flex-col items-center gap-2 text-center">
-        <PlayerAvatar photoUrl={avatar?.photo_crop_url ?? profile.photo_url} pose="idle" className="h-52 w-40" />
+        <PlayerAvatar photoUrl={avatar?.photo_crop_url ?? profile.photo_url} pose="idle" skinId={((avatar?.equipped as Record<string, string | null>)?.skin as string) ?? "albirroja"} className="h-52 w-40" />
         <h1 className="font-ui text-2xl font-extrabold text-ice">@{profile.nickname}</h1>
         <p className="text-ice/70">
           {profile.display_name}

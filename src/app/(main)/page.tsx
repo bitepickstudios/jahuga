@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getOwnProfile } from "@/features/profiles/queries";
+import { getAvatar, getOwnProfile } from "@/features/profiles/queries";
 import { getPendingChallenges } from "@/features/matches/queries";
 import { getMyGroup } from "@/features/groups/queries";
+import { checkinStreak } from "@/features/economy/actions";
+import { formatCoins } from "@/features/economy/config";
 import { PlayerAvatar } from "@/features/avatars/PlayerAvatar";
 import { ChallengeCard } from "./ChallengeCard";
 
@@ -16,10 +18,21 @@ export default async function Home() {
 
   if (!profile) return <AnonHome />;
 
-  const [challenges, myGroup] = await Promise.all([getPendingChallenges(), getMyGroup()]);
+  const [challenges, myGroup, avatar, streak] = await Promise.all([
+    getPendingChallenges(),
+    getMyGroup(),
+    getAvatar(profile.id),
+    checkinStreak(), // idempotente por día; premia la vuelta diaria (D2)
+  ]);
+  const skinId = ((avatar?.equipped as Record<string, string | null>)?.skin as string) ?? "albirroja";
 
   return (
     <main className="bg-stadium -mb-24 flex-1 pb-24">
+      {streak && streak.reward > 0 && (
+        <div className="mx-auto mt-3 w-fit rounded-full border border-gold/40 bg-navy/90 px-4 py-1.5 font-ui text-sm font-bold text-gold">
+          🔥 Día {streak.days} de racha: +{formatCoins(streak.reward)} Coins
+        </div>
+      )}
       <div className="mx-auto flex w-full max-w-6xl flex-col px-4 py-5 lg:grid lg:grid-cols-[300px_1fr_340px] lg:items-start lg:gap-6">
         <aside className="order-3 mt-6 lg:order-1 lg:mt-0">
           <Link
@@ -83,13 +96,14 @@ export default async function Home() {
                   challengerName={c.challenger?.display_name ?? `@${c.challenger?.nickname}`}
                   challengerPhoto={c.challenger?.photo_url ?? null}
                   mode={c.mode}
+                  wagerAmount={c.wager_amount}
                 />
               ))}
             </div>
           )}
 
           <div className="relative flex flex-col items-center pt-2">
-            <PlayerAvatar photoUrl={profile.photo_url} pose="idle" className="h-72 w-56 drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)] lg:h-96 lg:w-72" />
+            <PlayerAvatar photoUrl={profile.photo_url} pose="idle" skinId={skinId} className="h-72 w-56 drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)] lg:h-96 lg:w-72" />
             {/* Podio de luz */}
             <div className="pointer-events-none -mt-6 h-10 w-64 rounded-[100%] bg-[radial-gradient(ellipse_at_center,rgba(61,109,255,0.4),transparent_70%)] lg:w-80" />
           </div>
@@ -109,6 +123,7 @@ export default async function Home() {
                   challengerName={c.challenger?.display_name ?? `@${c.challenger?.nickname}`}
                   challengerPhoto={c.challenger?.photo_url ?? null}
                   mode={c.mode}
+                  wagerAmount={c.wager_amount}
                 />
               ))}
             </div>

@@ -26,6 +26,9 @@ export async function GET(request: NextRequest) {
     .eq("status", "pending")
     .lt("created_at", cutoff)
     .select("id");
+  for (const m of expired ?? []) {
+    await admin.rpc("fn_refund_wager", { p_match: m.id }); // no-op sin escrow
+  }
 
   // Walkover: activas aceptadas hace > 48 h donde un jugador va atrasado y no movió desde el corte
   const { data: stale } = await admin
@@ -54,8 +57,9 @@ export async function GET(request: NextRequest) {
       const last = lastMove(players[behind]) ?? match.accepted_at;
       if (last < cutoff) loser = players[behind];
     } else if ((lastMove(players[0]) ?? match.accepted_at) < cutoff && (lastMove(players[1]) ?? match.accepted_at) < cutoff) {
-      // Ambos inactivos y empatados en rondas → abandonada sin ganador
+      // Ambos inactivos y empatados en rondas → abandonada sin ganador, escrow devuelto
       await admin.from("matches").update({ status: "abandoned" }).eq("id", match.id).eq("status", "active");
+      await admin.rpc("fn_refund_wager", { p_match: match.id });
       abandoned++;
       continue;
     }
@@ -66,6 +70,8 @@ export async function GET(request: NextRequest) {
         .update({ status: "abandoned", winner_id: winner, resolved_at: new Date().toISOString() })
         .eq("id", match.id)
         .eq("status", "active");
+      // Walkover: payout normal (spec minijuego-penales.md §7)
+      await admin.rpc("fn_settle_wager", { p_match: match.id, p_winner: winner });
       abandoned++;
     }
   }

@@ -2,14 +2,14 @@
 
 Decisiones que el agente **no debe asumir**. Cuando una fase las necesite, se resuelven acá primero (con fecha y razón) y recién después se implementan.
 
-## D1 — Rake en apuestas (sumidero de coins)
-¿El pozo de una apuesta paga 100% al ganador, o la plataforma retiene un % (ej. 5%) como sumidero anti-inflación?
-- **A favor del rake:** sin sumideros fuertes, la masa de coins solo crece y los montos pierden significado.
-- **En contra:** entre amigos puede sentirse "impuesto". Las skins ya son sumidero.
-- **Recomendación pendiente de validar:** lanzar sin rake, monitorear masa monetaria (F5), agregar si infla.
+## D1 — Rake en apuestas (sumidero de coins) ✅ RESUELTA
+**Decisión 2026-07-04: lanzar sin rake.** El pozo paga 100% al ganador. Monitorear masa monetaria (las skins son el sumidero); agregar rake solo si la economía infla.
 
-## D2 — Valores iniciales de la economía
-Bono de bienvenida, recompensas de streak/misiones, precios de skins, límite diario de transferencia. Propuesta inicial a validar: bienvenida 10.000 · victoria de misión diaria 1.000–3.000 · skins 25.000–100.000 · transferencia máx. 20.000/día. Definir antes de F5.
+## D2 — Valores iniciales de la economía ✅ RESUELTA
+**Decisión 2026-07-04 (adopta la propuesta del doc):** bienvenida **10.000** · racha diaria **500 × día de racha, tope 5.000** · misión diaria 1.000–3.000 (F6) · skins **25.000–100.000** · transferencia máx. **20.000/día**. Todos los valores viven en `src/features/economy/config.ts` — un solo lugar, iterables.
+
+## D8 — Compra y retiro de Coins por dinero real (pedido del fundador, 2026-07-04)
+El fundador quiere Coins comprables y retirables por dinero real, bajo la tesis "habilidad, no azar". **Estado: NO implementado y condicionado a habilitación legal.** Razones registradas: (1) la decisión original documentó el riesgo Conajzar/procesadores; (2) el motor de penales tiene azar por diseño (15% de errado) — debilita la tesis de skill puro ante un regulador; (3) faltan licencia/dictamen, KYC/AML, verificación de edad (D5 abierta) y procesador que acepte el rubro. **Prerequisitos para reabrir:** dictamen legal escrito + licencia o resolución del regulador + KYC + verificación de edad + partner de pagos. El ledger ya queda extensible por `kind` para enchufar una capa de compra si eso llega.
 
 ## D3 — Revelación en modo en vivo ✅ RESUELTA
 **Decisión 2026-07-03: la revelación ES la RLS.** Los movimientos del rival en la ronda N se vuelven visibles cuando ambos jugadores commitearon la ronda N (función `security definer` en la policy de `match_moves`), o todos al estar la partida `resolved`. El server resuelve el resultado tras cada commit (Server Action con service role, motor determinístico). Mismo mecanismo sirve para vivo y async sin estado extra de "ronda revelada"; Realtime notifica cuando la fila del rival se vuelve visible. La autoridad siempre es el servidor.

@@ -2,6 +2,16 @@ import { useId } from "react";
 
 export type AvatarPose = "idle" | "kick" | "save";
 
+/** Kits comprables en la tienda (ids = skins.id de la migración 4). */
+const KITS: Record<string, { jersey: string; stripe: string; shorts: string }> = {
+  albirroja: { jersey: "#e0322c", stripe: "#efede6", shorts: "#1c2431" },
+  azulgrana: { jersey: "#16295e", stripe: "#a3132f", shorts: "#111827" },
+  franjeada: { jersey: "#f2f2f2", stripe: "#111111", shorts: "#111111" },
+  selva: { jersey: "#1f7a3d", stripe: "#eaf0ff", shorts: "#0f3d1f" },
+  violeta: { jersey: "#7c3aed", stripe: "#c8f531", shorts: "#2a1655" },
+  dorada: { jersey: "#d4a017", stripe: "#111111", shorts: "#3a2c05" },
+};
+
 /**
  * Avatar 2D de plataforma (docs/arquitectura.md): foto del usuario compuesta
  * sobre cuerpo ilustrado estilo sticker. Los minijuegos consumen este componente;
@@ -10,17 +20,20 @@ export type AvatarPose = "idle" | "kick" | "save";
 export function PlayerAvatar({
   photoUrl,
   pose = "idle",
+  skinId = "albirroja",
   className = "",
 }: {
   photoUrl: string | null;
   pose?: AvatarPose;
+  skinId?: string;
   className?: string;
 }) {
   const clipId = useId();
-  const jersey = "#e0322c"; // skin default: camiseta albirroja (intencional, no es token de UI)
-  const stripe = "#efede6";
+  const kit = KITS[skinId] ?? KITS.albirroja;
+  const jersey = kit.jersey;
+  const stripe = kit.stripe;
   const skin = "#e8b08a";
-  const shorts = "#1c2431";
+  const shorts = kit.shorts;
 
   return (
     <svg viewBox="0 0 200 260" className={className} role="img" aria-label="Avatar del jugador">
