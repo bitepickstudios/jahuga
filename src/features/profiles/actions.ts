@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { claimPendingInvite } from "@/features/friends/actions";
 import { validateEmail, validateNickname, validatePassword } from "./validation";
 
 export interface AuthFormState {
@@ -55,6 +56,8 @@ export async function signIn(_prev: AuthFormState, formData: FormData): Promise<
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { error: "Correo o contraseña incorrectos." };
 
+  await claimPendingInvite(data.user.id);
+
   const { data: profile } = await supabase
     .from("profiles")
     .select("onboarding_completed")
@@ -98,6 +101,7 @@ export async function completeOnboarding(input: {
   if (input.photoUrl) {
     await supabase.from("avatars").update({ photo_crop_url: input.photoUrl }).eq("profile_id", user.id);
   }
+  await claimPendingInvite(user.id);
   redirect("/");
 }
 

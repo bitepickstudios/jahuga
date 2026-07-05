@@ -6,13 +6,13 @@ import { challengeUser, type ChallengeFormState } from "@/features/matches/actio
 
 const INITIAL: ChallengeFormState = { error: null };
 
-export function ChallengeForm() {
+export function ChallengeForm({ defaultNickname = "" }: { defaultNickname?: string }) {
   const [state, formAction, pending] = useActionState(challengeUser, INITIAL);
   const [mode, setMode] = useState<"live" | "async">("live");
 
   return (
     <form action={formAction} className="flex flex-col gap-5">
-      <TextField name="nickname" type="text" isRequired fullWidth>
+      <TextField name="nickname" type="text" isRequired fullWidth defaultValue={defaultNickname}>
         <Label>Nickname del rival</Label>
         <Input placeholder="@su_apodo" autoComplete="off" autoCapitalize="none" />
       </TextField>

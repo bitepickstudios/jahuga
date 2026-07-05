@@ -6,9 +6,14 @@ import { ChallengeForm } from "./ChallengeForm";
 
 export const metadata: Metadata = { title: "Retar — Jahuga" };
 
-export default async function RetarPage() {
+export default async function RetarPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ nick?: string }>;
+}) {
   const profile = await getOwnProfile();
   if (!profile) redirect("/login");
+  const { nick } = await searchParams;
 
   return (
     <main className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-6">
@@ -18,7 +23,7 @@ export default async function RetarPage() {
         </Link>
       </header>
       <h1 className="font-ui text-3xl font-extrabold text-ice">Retar a penales</h1>
-      <ChallengeForm />
+      <ChallengeForm defaultNickname={nick ?? ""} />
     </main>
   );
 }

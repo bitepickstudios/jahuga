@@ -34,6 +34,16 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
+
+  // Link de invitación sin sesión: guardar el código para reclamarlo al registrarse
+  const inviteMatch = path.match(/^\/invite\/([\w-]+)/);
+  if (inviteMatch && !user) {
+    response.cookies.set("jahuga_invite", inviteMatch[1], {
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+  }
+
   if (!user && PROTECTED_PREFIXES.some((p) => path.startsWith(p))) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";

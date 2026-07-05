@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getOwnProfile } from "@/features/profiles/queries";
 import { getPendingChallenges } from "@/features/matches/queries";
+import { getMyGroup } from "@/features/groups/queries";
 import { PlayerAvatar } from "@/features/avatars/PlayerAvatar";
 import { ChallengeCard } from "./ChallengeCard";
 
@@ -15,27 +16,59 @@ export default async function Home() {
 
   if (!profile) return <AnonHome />;
 
-  const challenges = await getPendingChallenges();
+  const [challenges, myGroup] = await Promise.all([getPendingChallenges(), getMyGroup()]);
 
   return (
     <main className="bg-stadium -mb-24 flex-1 pb-24">
       <div className="mx-auto flex w-full max-w-6xl flex-col px-4 py-5 lg:grid lg:grid-cols-[300px_1fr_340px] lg:items-start lg:gap-6">
-        {/* Mi Grupo — llega en F4; la card ya marca el lugar */}
         <aside className="order-3 mt-6 lg:order-1 lg:mt-0">
           <Link
             href="/grupo"
             className="block rounded-2xl border border-ice/10 bg-navy/80 p-4 backdrop-blur active:bg-navy-raised/80"
           >
             <div className="flex items-center justify-between">
-              <h2 className="font-ui text-base font-extrabold text-ice">Mi Grupo</h2>
+              <h2 className="font-ui text-base font-extrabold text-ice">
+                {myGroup ? myGroup.group.name : "Mi Grupo"}
+              </h2>
               <span className="text-ice/40">›</span>
             </div>
-            <p className="mt-1 text-sm text-ice/50">
-              Armá tu grupo de amigos y compitan entre todos.
-            </p>
-            <span className="mt-3 inline-block rounded-full bg-ice/10 px-3 py-1 font-ui text-[11px] font-bold uppercase tracking-wide text-ice/70">
-              Próximamente
-            </span>
+            {myGroup ? (
+              <>
+                <div className="mt-2 flex -space-x-2">
+                  {myGroup.members.slice(0, 5).map((m) =>
+                    m.photo_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        key={m.id}
+                        src={m.photo_url}
+                        alt=""
+                        className="size-9 rounded-full border-2 border-navy object-cover"
+                      />
+                    ) : (
+                      <span
+                        key={m.id}
+                        className="flex size-9 items-center justify-center rounded-full border-2 border-navy bg-navy-raised text-sm"
+                      >
+                        🙂
+                      </span>
+                    ),
+                  )}
+                </div>
+                <div className="mt-3 flex gap-4 text-sm text-ice/70">
+                  <span>👥 {myGroup.members.length}</span>
+                  <span>🏆 {myGroup.totals.won} victorias</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="mt-1 text-sm text-ice/50">
+                  Armá tu grupo de amigos y compitan entre todos.
+                </p>
+                <span className="mt-3 inline-block rounded-full bg-volt px-3 py-1 font-ui text-[11px] font-extrabold uppercase tracking-wide text-volt-ink">
+                  Crear grupo
+                </span>
+              </>
+            )}
           </Link>
         </aside>
 
