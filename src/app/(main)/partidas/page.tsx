@@ -50,32 +50,39 @@ export default async function PartidasPage() {
           {matches.map((m) => {
             const info = statusInfo(m);
             return (
-              <li key={m.id}>
+              <li
+                key={m.id}
+                className="flex items-center gap-3 rounded-2xl border border-ice/10 bg-navy/80 p-4 backdrop-blur"
+              >
+                {m.rival?.photo_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={m.rival.photo_url} alt="" className="size-12 rounded-full object-cover" />
+                ) : (
+                  <span className="flex size-12 items-center justify-center rounded-full bg-navy-raised text-ice/60">
+                    <Swords size={20} />
+                  </span>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-ui font-extrabold text-ice">{info.rival}</p>
+                  <p className={`flex items-center gap-1.5 truncate text-sm ${info.tone === "volt" ? "text-volt" : "text-ice/50"}`}>
+                    {m.mode === "live" ? <Clock size={13} /> : <Timer size={13} />}
+                    {info.label}
+                  </p>
+                  {m.wager_amount !== null && (
+                    <p className="mt-0.5 flex items-center gap-1 text-xs font-bold text-gold">
+                      <Coins size={12} /> {formatCoins(m.wager_amount)} en juego
+                    </p>
+                  )}
+                </div>
                 <Link
                   href={`/play/${m.id}`}
-                  className="flex items-center gap-3 rounded-2xl border border-ice/10 bg-navy/80 p-4 backdrop-blur transition-colors hover:border-volt/30 active:bg-navy-raised/70"
+                  className={`flex min-h-10 shrink-0 items-center gap-1.5 rounded-xl px-4 font-ui text-sm font-extrabold transition-transform active:scale-95 ${
+                    info.tone === "volt"
+                      ? "bg-volt text-volt-ink"
+                      : "border border-ice/20 text-ice"
+                  }`}
                 >
-                  {m.rival?.photo_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={m.rival.photo_url} alt="" className="size-12 rounded-full object-cover" />
-                  ) : (
-                    <span className="flex size-12 items-center justify-center rounded-full bg-navy-raised text-ice/60">
-                      <Swords size={20} />
-                    </span>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-ui font-extrabold text-ice">{info.rival}</p>
-                    <p className={`flex items-center gap-1.5 truncate text-sm ${info.tone === "volt" ? "text-volt" : "text-ice/50"}`}>
-                      {m.mode === "live" ? <Clock size={13} /> : <Timer size={13} />}
-                      {info.label}
-                    </p>
-                    {m.wager_amount !== null && (
-                      <p className="mt-0.5 flex items-center gap-1 text-xs font-bold text-gold">
-                        <Coins size={12} /> {formatCoins(m.wager_amount)} en juego
-                      </p>
-                    )}
-                  </div>
-                  <ChevronRight size={20} className="shrink-0 text-ice/40" />
+                  Ingresar <ChevronRight size={16} />
                 </Link>
               </li>
             );

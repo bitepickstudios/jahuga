@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Flame, Target } from "lucide-react";
 import { getAvatar, getOwnProfile } from "@/features/profiles/queries";
-import { getPendingChallenges } from "@/features/matches/queries";
+import { getOpenMatches, getPendingChallenges } from "@/features/matches/queries";
 import { getMyGroup } from "@/features/groups/queries";
 import { checkinStreak } from "@/features/economy/actions";
 import { formatCoins } from "@/features/economy/config";
@@ -13,6 +13,7 @@ import { ChallengeCard } from "./ChallengeCard";
 import { MissionList } from "./MissionList";
 import { GroupCard } from "./GroupCard";
 import { LobbyActions } from "./LobbyActions";
+import { OpenMatchesPanel } from "./OpenMatchesPanel";
 import { InstallHint } from "./InstallHint";
 
 // ponytail: sin env de Supabase la app cae a la landing anónima.
@@ -24,14 +25,24 @@ export default async function Home() {
 
   if (!profile) return <AnonHome />;
 
-  const [challenges, myGroup, avatar, streak, missions] = await Promise.all([
+  const [challenges, myGroup, avatar, streak, missions, openMatches] = await Promise.all([
     getPendingChallenges(),
     getMyGroup(),
     getAvatar(profile.id),
     checkinStreak(), // idempotente por día; premia la vuelta diaria (D2)
     getMissions(),
+    getOpenMatches(),
   ]);
   const skinId = ((avatar?.equipped as Record<string, string | null>)?.skin as string) ?? "albirroja";
+
+  // Panel del lobby: partidas en curso (activas + enviadas), no las recibidas
+  // (esas ya aparecen como ChallengeCard con aceptar/rechazar).
+  const inProgress = openMatches.filter(
+    (m) => m.status === "active" || (m.status === "pending" && m.role === "challenger"),
+  );
+  const openPanel = inProgress.length > 0 ? (
+    <OpenMatchesPanel matches={inProgress.slice(0, 3)} total={inProgress.length} />
+  ) : null;
 
   const challengeCards = challenges.map((c) => (
     <ChallengeCard
@@ -87,6 +98,7 @@ export default async function Home() {
 
         <aside className="flex flex-col gap-3">
           {challengeCards}
+          {openPanel}
           <LobbyActions />
         </aside>
       </div>
@@ -100,6 +112,7 @@ export default async function Home() {
           name={profile.display_name ?? `@${profile.nickname}`}
           className="mx-auto mt-28 w-full max-w-[280px]"
         />
+        {openPanel}
         {groupCard}
         {missionsCard}
         <LobbyActions />
