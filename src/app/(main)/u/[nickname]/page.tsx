@@ -5,7 +5,7 @@ import { getProfileStats } from "@/features/matches/queries";
 import { ageFrom, localDate } from "@/features/profiles/types";
 import { PlayerAvatar } from "@/features/avatars/PlayerAvatar";
 
-export const metadata: Metadata = { title: "Perfil — Lobby" };
+export const metadata: Metadata = { title: "Perfil — Jahuga" };
 
 export default async function PublicProfilePage({
   params,
@@ -17,11 +17,11 @@ export default async function PublicProfilePage({
 
   if (!profile) {
     return (
-      <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center justify-center gap-4 px-5 text-center">
+      <main className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-4 px-5 py-24 text-center">
         <p className="text-5xl">🕵️</p>
-        <h1 className="font-display text-3xl uppercase text-chalk">Perfil no disponible</h1>
-        <p className="text-chalk/60">No existe o es privado. Si es tu amigo, pedile que te agregue.</p>
-        <Link href="/" className="text-albirroja underline underline-offset-4">
+        <h1 className="font-ui text-2xl font-extrabold text-ice">Perfil no disponible</h1>
+        <p className="text-ice/60">No existe o es privado. Si es tu amigo, pedile que te agregue.</p>
+        <Link href="/" className="text-volt underline underline-offset-4">
           Volver al lobby
         </Link>
       </main>
@@ -36,31 +36,25 @@ export default async function PublicProfilePage({
     : null;
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-6 px-5 py-8">
-      <header>
-        <Link href="/" className="text-sm text-chalk/60 underline underline-offset-4">
-          ← Lobby
-        </Link>
-      </header>
-
+    <main className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-6">
       <section className="flex flex-col items-center gap-2 text-center">
         <PlayerAvatar photoUrl={avatar?.photo_crop_url ?? profile.photo_url} pose="idle" className="h-52 w-40" />
-        <h1 className="font-display text-3xl uppercase text-chalk">@{profile.nickname}</h1>
-        <p className="text-chalk/70">
+        <h1 className="font-ui text-2xl font-extrabold text-ice">@{profile.nickname}</h1>
+        <p className="text-ice/70">
           {profile.display_name}
           {age !== null && ` · ${age} años`}
         </p>
-        {birthday && <p className="text-sm text-chalk/40">🎂 {birthday}</p>}
+        {birthday && <p className="text-sm text-ice/40">🎂 {birthday}</p>}
       </section>
 
       {profile.iconic_phrases.length > 0 && (
-        <section className="rounded-md border border-chalk/15 p-4">
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-chalk/50">
+        <section className="rounded-md border border-ice/15 p-4">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ice/50">
             Frases icónicas
           </h2>
           <ul className="flex flex-col gap-2">
             {profile.iconic_phrases.map((phrase, i) => (
-              <li key={i} className="text-chalk/90">
+              <li key={i} className="text-ice/90">
                 “{phrase}”
               </li>
             ))}
@@ -68,29 +62,29 @@ export default async function PublicProfilePage({
         </section>
       )}
 
-      <section className="rounded-md border border-chalk/15 p-4">
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-chalk/50">
+      <section className="rounded-md border border-ice/15 p-4">
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-ice/50">
           Stats · Penales
         </h2>
         {penales ? (
           <div className="grid grid-cols-3 text-center">
             <div>
-              <p className="font-display text-3xl text-chalk">{penales.played}</p>
-              <p className="text-xs text-chalk/40">jugadas</p>
+              <p className="font-ui text-3xl font-extrabold text-ice">{penales.played}</p>
+              <p className="text-xs text-ice/40">jugadas</p>
             </div>
             <div>
-              <p className="font-display text-3xl text-chalk">{penales.won}</p>
-              <p className="text-xs text-chalk/40">ganadas</p>
+              <p className="font-ui text-3xl font-extrabold text-ice">{penales.won}</p>
+              <p className="text-xs text-ice/40">ganadas</p>
             </div>
             <div>
-              <p className="font-display text-3xl text-chalk">
+              <p className="font-ui text-3xl font-extrabold text-ice">
                 {Math.round((penales.won / Math.max(penales.played, 1)) * 100)}%
               </p>
-              <p className="text-xs text-chalk/40">winrate</p>
+              <p className="text-xs text-ice/40">winrate</p>
             </div>
           </div>
         ) : (
-          <p className="text-sm text-chalk/40">Todavía sin partidas online.</p>
+          <p className="text-sm text-ice/40">Todavía sin partidas online.</p>
         )}
       </section>
     </main>

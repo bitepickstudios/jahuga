@@ -4,7 +4,7 @@ import { getAvatar, getOwnProfile } from "@/features/profiles/queries";
 import { getOwnMatchHistory, getProfileStats } from "@/features/matches/queries";
 import { ProfileEditor, type HistoryEntry } from "./ProfileEditor";
 
-export const metadata: Metadata = { title: "Mi perfil — Lobby" };
+export const metadata: Metadata = { title: "Mi perfil — Jahuga" };
 
 export default async function PerfilPage() {
   const profile = await getOwnProfile();

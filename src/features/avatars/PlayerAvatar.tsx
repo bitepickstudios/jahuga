@@ -17,7 +17,7 @@ export function PlayerAvatar({
   className?: string;
 }) {
   const clipId = useId();
-  const jersey = "#e0322c"; // skin default: albirroja
+  const jersey = "#e0322c"; // skin default: camiseta albirroja (intencional, no es token de UI)
   const stripe = "#efede6";
   const skin = "#e8b08a";
   const shorts = "#1c2431";

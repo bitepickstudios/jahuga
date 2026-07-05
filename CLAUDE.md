@@ -1,10 +1,10 @@
-# CLAUDE.md — Lobby
+# CLAUDE.md — Jahuga
 
 Contrato de trabajo para el agente. Leer antes de tocar código. Los documentos en `/docs` son la fuente de verdad del producto; este archivo define cómo se trabaja.
 
-## Qué es Lobby
+## Qué es Jahuga
 
-Plataforma social web de minijuegos entre amigos. Los usuarios crean su perfil con avatar, pertenecen a grupos, se retan 1v1 en minijuegos apostando Lobby Coins (moneda virtual **no comprable, no canjeable por dinero real**) y acumulan puntos, skins y reputación. Primer minijuego: tandas de penales por decisión simultánea.
+Jahuga (jahuga.app, antes "Lobby") es una plataforma social web de minijuegos entre amigos. Los usuarios crean su perfil con avatar, pertenecen a grupos, se retan 1v1 en minijuegos apostando Coins (moneda virtual **no comprable, no canjeable por dinero real**) y acumulan puntos, skins y reputación. Primer minijuego: tandas de penales por decisión simultánea.
 
 ## Fuente de verdad
 
@@ -16,6 +16,7 @@ Plataforma social web de minijuegos entre amigos. Los usuarios crean su perfil c
 | `docs/arquitectura.md` | Screaming architecture, contrato Game SDK |
 | `docs/modelo-datos.md` | Esquema de base de datos y RLS |
 | `docs/minijuego-penales.md` | Spec completa del primer minijuego |
+| `docs/DESIGN.md` | Sistema de diseño: identidad, tokens, componentes, layout |
 | `docs/decisiones-abiertas.md` | Decisiones pendientes — NO asumir, preguntar |
 
 Si el código contradice a `/docs`, el doc manda. Si un doc quedó obsoleto, actualizarlo en el mismo PR que el código.

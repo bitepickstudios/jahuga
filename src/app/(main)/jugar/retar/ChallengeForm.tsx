@@ -31,16 +31,16 @@ export function ChallengeForm() {
             aria-pressed={mode === option.value}
             onClick={() => setMode(option.value)}
             className={`min-h-16 rounded-md border px-3 py-2 text-left transition-colors ${
-              mode === option.value ? "border-chalk bg-chalk/10" : "border-chalk/20 active:bg-chalk/5"
+              mode === option.value ? "border-ice bg-ice/10" : "border-ice/20 active:bg-ice/5"
             }`}
           >
-            <span className="block font-semibold text-chalk">{option.label}</span>
-            <span className="block text-xs text-chalk/50">{option.hint}</span>
+            <span className="block font-semibold text-ice">{option.label}</span>
+            <span className="block text-xs text-ice/50">{option.hint}</span>
           </button>
         ))}
       </div>
 
-      {state.error && <p className="text-sm text-albirroja">{state.error}</p>}
+      {state.error && <p className="text-sm text-danger">{state.error}</p>}
 
       <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12" isDisabled={pending}>
         {pending ? "Creando reto..." : "Mandar reto"}

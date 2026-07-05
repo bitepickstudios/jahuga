@@ -4,20 +4,20 @@ import { redirect } from "next/navigation";
 import { getOwnProfile } from "@/features/profiles/queries";
 import { ChallengeForm } from "./ChallengeForm";
 
-export const metadata: Metadata = { title: "Retar — Lobby" };
+export const metadata: Metadata = { title: "Retar — Jahuga" };
 
 export default async function RetarPage() {
   const profile = await getOwnProfile();
   if (!profile) redirect("/login");
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-6 px-5 py-8">
+    <main className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-6">
       <header>
-        <Link href="/jugar" className="text-sm text-chalk/60 underline underline-offset-4">
+        <Link href="/jugar" className="text-sm text-ice/60 underline underline-offset-4">
           ← Jugar
         </Link>
       </header>
-      <h1 className="font-display text-4xl uppercase text-chalk">Retar a penales</h1>
+      <h1 className="font-ui text-3xl font-extrabold text-ice">Retar a penales</h1>
       <ChallengeForm />
     </main>
   );

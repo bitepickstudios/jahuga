@@ -95,13 +95,13 @@ export function PenalesMatch() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center gap-6 px-5 py-8">
+      <main className="bg-pitch-game min-h-dvh"><div className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center gap-6 px-5 py-8">
         {screen.kind === "setup" && (
           <>
             <header className="mt-8 text-center">
-              <p className="text-sm uppercase tracking-widest text-chalk/50">Lobby presenta</p>
-              <h1 className="font-display text-5xl uppercase text-chalk">Tanda de Penales</h1>
-              <p className="mt-3 text-chalk/60">
+              <p className="text-sm uppercase tracking-widest text-ice/50">Jahuga presenta</p>
+              <h1 className="font-display text-5xl uppercase text-ice">Tanda de Penales</h1>
+              <p className="mt-3 text-ice/60">
                 Cinco penales por lado. Leé al rival: no hay reflejos, hay psicología.
               </p>
             </header>
@@ -120,7 +120,7 @@ export function PenalesMatch() {
           <div className="flex w-full flex-col items-center gap-2">
             <Scoreboard names={names} results={results} scores={scores} />
             {inSuddenDeath && outcome === null && (
-              <p className="font-display text-lg uppercase tracking-wide text-albirroja">Muerte súbita</p>
+              <p className="font-display text-lg uppercase tracking-wide text-danger">Muerte súbita</p>
             )}
           </div>
         )}
@@ -128,10 +128,10 @@ export function PenalesMatch() {
         {screen.kind === "handoff" && (
           <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
             <p className="text-4xl">🤫</p>
-            <h2 className="font-display text-3xl uppercase text-chalk">
+            <h2 className="font-display text-3xl uppercase text-ice">
               Pasale el teléfono a {names[screen.player]}
             </h2>
-            <p className="max-w-xs text-chalk/60">
+            <p className="max-w-xs text-ice/60">
               {names[screen.player === 0 ? 1 : 0]}: nada de mirar. La gracia es no saber.
             </p>
             <Button
@@ -175,14 +175,14 @@ export function PenalesMatch() {
 
         {screen.kind === "result" && outcome && (
           <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-            <h2 className="font-display text-5xl uppercase text-chalk">
+            <h2 className="font-display text-5xl uppercase text-ice">
               {outcome.winnerId === null
                 ? "Empate"
                 : mode === "bot" && outcome.winnerId === PLAYER_IDS[0]
                   ? "¡Ganaste!"
                   : `Ganó ${names[PLAYER_IDS.indexOf(outcome.winnerId) as 0 | 1]}`}
             </h2>
-            <p className="font-display text-7xl text-chalk">
+            <p className="font-display text-7xl text-ice">
               {outcome.scores[PLAYER_IDS[0]]} – {outcome.scores[PLAYER_IDS[1]]}
             </p>
             <div className="flex w-full max-w-sm flex-col gap-3">
@@ -195,6 +195,7 @@ export function PenalesMatch() {
             </div>
           </div>
         )}
+      </div>
       </main>
     </MotionConfig>
   );

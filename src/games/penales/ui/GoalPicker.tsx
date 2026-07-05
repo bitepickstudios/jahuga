@@ -18,7 +18,7 @@ export function GoalPicker({
   return (
     <div className="relative mx-auto w-full max-w-sm">
       {/* Arco: travesaño y postes */}
-      <div className="rounded-t-sm border-x-8 border-t-8 border-chalk/90 bg-night/60">
+      <div className="rounded-t-sm border-x-8 border-t-8 border-ice/90 bg-night/60">
         <div
           className="grid h-44 grid-cols-3"
           style={{
@@ -36,18 +36,18 @@ export function GoalPicker({
               }
               aria-pressed={selected === zone}
               onClick={() => onSelect(zone)}
-              className={`transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-amber-card ${
+              className={`transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-volt ${
                 selected === zone
-                  ? "bg-albirroja/70 shadow-[inset_0_0_0_3px_var(--color-chalk)]"
-                  : "active:bg-chalk/20"
+                  ? "bg-volt/25 shadow-[inset_0_0_0_3px_var(--color-volt)]"
+                  : "active:bg-ice/20"
               }`}
             />
           ))}
         </div>
       </div>
       {/* Línea de cal del área */}
-      <div className="h-2 w-full bg-chalk/90" />
-      <div className="mt-1 grid grid-cols-3 text-center text-xs uppercase tracking-widest text-chalk/50">
+      <div className="h-2 w-full bg-ice/90" />
+      <div className="mt-1 grid grid-cols-3 text-center text-xs uppercase tracking-widest text-ice/50">
         <span>Izquierda</span>
         <span>Centro</span>
         <span>Derecha</span>

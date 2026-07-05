@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Button } from "@heroui/react";
 import { createClient } from "@/lib/supabase/client";
 import { signOut, updateProfile } from "@/features/profiles/actions";
@@ -85,11 +84,8 @@ export function ProfileEditor({
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-6 px-5 py-8">
-      <header className="flex items-center justify-between">
-        <Link href="/" className="text-sm text-chalk/60 underline underline-offset-4">
-          ← Lobby
-        </Link>
+    <main className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-6">
+      <header className="flex items-center justify-end">
         <form action={signOut}>
           <Button type="submit" variant="ghost" size="sm">
             Cerrar sesión
@@ -99,13 +95,13 @@ export function ProfileEditor({
 
       <section className="flex flex-col items-center gap-2 text-center">
         <PlayerAvatar photoUrl={photoUrl} pose="idle" className="h-52 w-40" />
-        <h1 className="font-display text-3xl uppercase text-chalk">@{profile.nickname}</h1>
-        <p className="text-chalk/70">
+        <h1 className="font-ui text-2xl font-extrabold text-ice">@{profile.nickname}</h1>
+        <p className="text-ice/70">
           {profile.display_name}
           {age !== null && ` · ${age} años`}
         </p>
-        {birthday && <p className="text-sm text-chalk/40">🎂 {birthday}</p>}
-        <label className="cursor-pointer text-sm text-albirroja underline underline-offset-4">
+        {birthday && <p className="text-sm text-ice/40">🎂 {birthday}</p>}
+        <label className="cursor-pointer text-sm text-volt underline underline-offset-4">
           {busy ? "Guardando..." : "Cambiar foto"}
           <input
             type="file"
@@ -117,26 +113,26 @@ export function ProfileEditor({
         </label>
       </section>
 
-      <section className="rounded-md border border-chalk/15 p-4">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-chalk/50">
+      <section className="rounded-md border border-ice/15 p-4">
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-ice/50">
           Frases icónicas
         </h2>
         <ul className="flex flex-col gap-2">
           {phrases.map((phrase, i) => (
             <li key={`${phrase}-${i}`} className="flex items-center justify-between gap-2">
-              <span className="text-chalk/90">“{phrase}”</span>
+              <span className="text-ice/90">“{phrase}”</span>
               <button
                 type="button"
                 onClick={() => removePhrase(i)}
                 disabled={busy}
                 aria-label={`Borrar frase: ${phrase}`}
-                className="min-h-8 min-w-8 rounded text-chalk/40 active:text-albirroja"
+                className="min-h-8 min-w-8 rounded text-ice/40 active:text-danger"
               >
                 ✕
               </button>
             </li>
           ))}
-          {phrases.length === 0 && <li className="text-sm text-chalk/40">Todavía no cargaste ninguna.</li>}
+          {phrases.length === 0 && <li className="text-sm text-ice/40">Todavía no cargaste ninguna.</li>}
         </ul>
         <div className="mt-3 flex gap-2">
           <input
@@ -146,7 +142,7 @@ export function ProfileEditor({
             onKeyDown={(e) => e.key === "Enter" && addPhrase()}
             placeholder="Tu frase célebre"
             maxLength={120}
-            className="min-h-11 flex-1 rounded-md border border-chalk/20 bg-night px-3 text-chalk placeholder:text-chalk/30"
+            className="min-h-11 flex-1 rounded-md border border-ice/20 bg-night px-3 text-ice placeholder:text-ice/30"
           />
           <Button variant="secondary" onPress={addPhrase} isDisabled={busy || !newPhrase.trim()}>
             Agregar
@@ -154,10 +150,10 @@ export function ProfileEditor({
         </div>
       </section>
 
-      <section className="flex items-center justify-between rounded-md border border-chalk/15 p-4">
+      <section className="flex items-center justify-between rounded-md border border-ice/15 p-4">
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-chalk/50">Perfil público</h2>
-          <p className="text-sm text-chalk/40">
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-ice/50">Perfil público</h2>
+          <p className="text-sm text-ice/40">
             {isPublic ? "Cualquiera puede ver tu perfil." : "Solo tus amigos pueden verte."}
           </p>
         </div>
@@ -170,55 +166,55 @@ export function ProfileEditor({
           disabled={busy}
           onClick={() => togglePublic(!isPublic)}
           className={`relative h-8 w-14 shrink-0 rounded-full transition-colors ${
-            isPublic ? "bg-albirroja" : "bg-chalk/20"
+            isPublic ? "bg-volt" : "bg-ice/20"
           }`}
         >
           <span
-            className={`absolute top-1 size-6 rounded-full bg-chalk transition-all ${
+            className={`absolute top-1 size-6 rounded-full bg-ice transition-all ${
               isPublic ? "left-7" : "left-1"
             }`}
           />
         </button>
       </section>
 
-      <section className="rounded-md border border-chalk/15 p-4">
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-chalk/50">
+      <section className="rounded-md border border-ice/15 p-4">
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-ice/50">
           Stats · Penales
         </h2>
         {stats ? (
           <div className="grid grid-cols-3 text-center">
             <div>
-              <p className="font-display text-3xl text-chalk">{stats.played}</p>
-              <p className="text-xs text-chalk/40">jugadas</p>
+              <p className="font-ui text-3xl font-extrabold text-ice">{stats.played}</p>
+              <p className="text-xs text-ice/40">jugadas</p>
             </div>
             <div>
-              <p className="font-display text-3xl text-chalk">{stats.won}</p>
-              <p className="text-xs text-chalk/40">ganadas</p>
+              <p className="font-ui text-3xl font-extrabold text-ice">{stats.won}</p>
+              <p className="text-xs text-ice/40">ganadas</p>
             </div>
             <div>
-              <p className="font-display text-3xl text-chalk">
+              <p className="font-ui text-3xl font-extrabold text-ice">
                 {Math.round((stats.won / Math.max(stats.played, 1)) * 100)}%
               </p>
-              <p className="text-xs text-chalk/40">winrate</p>
+              <p className="text-xs text-ice/40">winrate</p>
             </div>
           </div>
         ) : (
-          <p className="text-sm text-chalk/40">Todavía no jugaste partidas online. Retá a alguien.</p>
+          <p className="text-sm text-ice/40">Todavía no jugaste partidas online. Retá a alguien.</p>
         )}
       </section>
 
       {history.length > 0 && (
-        <section className="rounded-md border border-chalk/15 p-4">
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-chalk/50">
+        <section className="rounded-md border border-ice/15 p-4">
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-widest text-ice/50">
             Últimas partidas
           </h2>
           <ul className="flex flex-col gap-2">
             {history.map((h) => (
               <li key={h.id} className="flex items-center justify-between text-sm">
-                <span className="text-chalk/80">
+                <span className="text-ice/80">
                   {h.result === "won" ? "🏆" : h.result === "lost" ? "❌" : "🤝"} vs {h.rivalName}
                 </span>
-                <span className="font-display text-lg text-chalk">
+                <span className="font-ui text-lg font-extrabold text-ice">
                   {h.myScore} – {h.rivalScore}
                 </span>
               </li>
@@ -227,7 +223,7 @@ export function ProfileEditor({
         </section>
       )}
 
-      {error && <p className="text-center text-sm text-albirroja">{error}</p>}
+      {error && <p className="text-center text-sm text-danger">{error}</p>}
     </main>
   );
 }

@@ -43,8 +43,8 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
   return (
     <div className="flex flex-col gap-6">
       <header className="text-center">
-        <p className="text-sm uppercase tracking-widest text-chalk/50">Paso {step} de 3</p>
-        <h1 className="font-display text-4xl uppercase text-chalk">Hola, @{nickname}</h1>
+        <p className="text-sm uppercase tracking-widest text-ice/50">Paso {step} de 3</p>
+        <h1 className="font-ui text-3xl font-extrabold text-ice">Hola, @{nickname}</h1>
       </header>
 
       {step === 1 && (
@@ -69,7 +69,7 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
       {step === 2 && (
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="birth" className="text-sm font-medium text-chalk/80">
+            <label htmlFor="birth" className="text-sm font-medium text-ice/80">
               ¿Cuándo naciste?
             </label>
             <input
@@ -78,9 +78,9 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
               value={birthDate}
               onChange={(e) => setBirthDate(e.target.value)}
               max={new Date().toISOString().slice(0, 10)}
-              className="min-h-12 rounded-md border border-chalk/20 bg-night px-3 text-chalk [color-scheme:dark]"
+              className="min-h-12 rounded-md border border-ice/20 bg-night px-3 text-ice [color-scheme:dark]"
             />
-            <p className="text-xs text-chalk/40">Mostramos tu edad y tu cumpleaños, nunca la fecha completa.</p>
+            <p className="text-xs text-ice/40">Mostramos tu edad y tu cumpleaños, nunca la fecha completa.</p>
           </div>
           <Button
             variant="primary"
@@ -97,16 +97,16 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
 
       {step === 3 && (
         <div className="flex flex-col items-center gap-4">
-          <p className="text-sm font-medium text-chalk/80">Tu foto (va a la cara de tu avatar)</p>
+          <p className="text-sm font-medium text-ice/80">Tu foto (va a la cara de tu avatar)</p>
           {photoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={photoUrl} alt="Tu foto" className="size-32 rounded-full border-2 border-chalk/40 object-cover" />
+            <img src={photoUrl} alt="Tu foto" className="size-32 rounded-full border-2 border-ice/40 object-cover" />
           ) : (
-            <div className="flex size-32 items-center justify-center rounded-full border-2 border-dashed border-chalk/30 text-4xl">
+            <div className="flex size-32 items-center justify-center rounded-full border-2 border-dashed border-ice/30 text-4xl">
               📷
             </div>
           )}
-          <label className="flex min-h-12 w-full cursor-pointer items-center justify-center rounded-md border border-chalk/25 text-chalk/80 active:bg-chalk/5">
+          <label className="flex min-h-12 w-full cursor-pointer items-center justify-center rounded-md border border-ice/25 text-ice/80 active:bg-ice/5">
             {uploading ? "Subiendo..." : photoUrl ? "Cambiar foto" : "Elegir foto"}
             <input
               type="file"
@@ -129,7 +129,7 @@ export function OnboardingWizard({ nickname, userId }: { nickname: string; userI
         </div>
       )}
 
-      {error && <p className="text-center text-sm text-albirroja">{error}</p>}
+      {error && <p className="text-center text-sm text-danger">{error}</p>}
     </div>
   );
 }

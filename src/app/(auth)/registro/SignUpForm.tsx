@@ -28,15 +28,15 @@ export function SignUpForm() {
         <Input autoComplete="new-password" />
       </TextField>
 
-      {state.error && <p className="text-sm text-albirroja">{state.error}</p>}
-      {state.info && <p className="text-sm text-amber-card">{state.info}</p>}
+      {state.error && <p className="text-sm text-danger">{state.error}</p>}
+      {state.info && <p className="text-sm text-gold">{state.info}</p>}
 
       <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12" isDisabled={pending}>
         {pending ? "Creando..." : "Crear cuenta"}
       </Button>
 
-      <p className="text-center text-xs text-chalk/40">
-        Las Lobby Coins son una moneda virtual sin valor real: no se compran ni se canjean por dinero.
+      <p className="text-center text-xs text-ice/40">
+        Los Coins son una moneda virtual sin valor real: no se compran ni se canjean por dinero.
       </p>
     </form>
   );

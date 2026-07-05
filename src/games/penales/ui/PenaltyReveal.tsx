@@ -13,9 +13,9 @@ const RESULT_LABEL: Record<PenaltyResult, string> = {
 };
 
 const RESULT_COLOR: Record<PenaltyResult, string> = {
-  goal: "text-chalk drop-shadow-[0_0_18px_rgba(46,125,79,0.9)]",
-  saved: "text-amber-card drop-shadow-[0_0_18px_rgba(232,185,59,0.6)]",
-  missed: "text-albirroja drop-shadow-[0_0_18px_rgba(224,50,44,0.6)]",
+  goal: "text-ice drop-shadow-[0_0_18px_rgba(46,125,79,0.9)]",
+  saved: "text-gold drop-shadow-[0_0_18px_rgba(232,185,59,0.6)]",
+  missed: "text-danger drop-shadow-[0_0_18px_rgba(224,50,44,0.6)]",
 };
 
 /**
@@ -41,10 +41,10 @@ export function PenaltyReveal({
 
   return (
     <div className="flex w-full flex-col items-center gap-5">
-      <p className="text-sm uppercase tracking-widest text-chalk/60">Patea {kickerName}</p>
+      <p className="text-sm uppercase tracking-widest text-ice/60">Patea {kickerName}</p>
 
       <div className="relative mx-auto w-full max-w-sm">
-        <div className="rounded-t-sm border-x-8 border-t-8 border-chalk/90 bg-night/60">
+        <div className="rounded-t-sm border-x-8 border-t-8 border-ice/90 bg-night/60">
           <div
             className="relative h-44 overflow-visible"
             style={{
@@ -82,7 +82,7 @@ export function PenaltyReveal({
             </motion.p>
           </div>
         </div>
-        <div className="h-2 w-full bg-chalk/90" />
+        <div className="h-2 w-full bg-ice/90" />
       </div>
 
       <motion.div

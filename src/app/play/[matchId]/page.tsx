@@ -6,7 +6,7 @@ import { commitMove, getMatchSnapshot, rematch, respondChallenge } from "@/featu
 import { OnlineMatch, type MatchSnapshot, type MoveRow } from "@/games/penales/ui/OnlineMatch";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "Partida — Lobby" };
+export const metadata: Metadata = { title: "Partida — Jahuga" };
 
 export default async function MatchPage({ params }: { params: Promise<{ matchId: string }> }) {
   const { matchId } = await params;
@@ -16,11 +16,11 @@ export default async function MatchPage({ params }: { params: Promise<{ matchId:
   const match = await getMatch(matchId); // RLS: solo participantes
   if (!match || match.game_id !== "penales" || !match.opponent_id) {
     return (
-      <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center justify-center gap-4 px-5 text-center">
+      <main className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-4 px-5 py-24 text-center">
         <p className="text-5xl">🔍</p>
-        <h1 className="font-display text-3xl uppercase text-chalk">Partida no encontrada</h1>
-        <p className="text-chalk/60">No existe o no sos parte de ella.</p>
-        <Link href="/" className="text-albirroja underline underline-offset-4">
+        <h1 className="font-ui text-2xl font-extrabold text-ice">Partida no encontrada</h1>
+        <p className="text-ice/60">No existe o no sos parte de ella.</p>
+        <Link href="/" className="text-volt underline underline-offset-4">
           Volver al lobby
         </Link>
       </main>

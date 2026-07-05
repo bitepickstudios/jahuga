@@ -46,7 +46,9 @@ Scaffolding del proyecto y del harness. Sin features.
 
 ---
 
-## Fase 3 — Partidas online 1v1 (sin economía) `[ ]`
+## Fase 3 — Partidas online 1v1 (sin economía) `[x]`
+
+> 2026-07-04: retos por nickname, partidas vivo/async con commit oculto por RLS (D3), resolución server-side, Realtime + cron de expiración, stats reales. Verificado: RLS del commit oculto automatizada (6 tests) + partida en vivo completa E2E con dos browsers (5-0, resultado correcto en ambos lados). Queda para el usuario: partida vivo+async con un amigo en dispositivos reales.
 
 Conectar el motor de la Fase 1 a la plataforma. Solo modo amistoso.
 

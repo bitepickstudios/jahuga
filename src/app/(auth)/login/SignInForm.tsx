@@ -20,7 +20,7 @@ export function SignInForm() {
         <Input autoComplete="current-password" />
       </TextField>
 
-      {state.error && <p className="text-sm text-albirroja">{state.error}</p>}
+      {state.error && <p className="text-sm text-danger">{state.error}</p>}
 
       <Button type="submit" variant="primary" size="lg" fullWidth className="min-h-12" isDisabled={pending}>
         {pending ? "Entrando..." : "Entrar"}

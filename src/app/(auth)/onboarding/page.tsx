@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getOwnProfile } from "@/features/profiles/queries";
 import { OnboardingWizard } from "./OnboardingWizard";
 
-export const metadata: Metadata = { title: "Bienvenida — Lobby" };
+export const metadata: Metadata = { title: "Bienvenida — Jahuga" };
 
 export default async function OnboardingPage() {
   const profile = await getOwnProfile();

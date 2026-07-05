@@ -1,32 +1,68 @@
 @import "@heroui/styles"; /* incluye tailwindcss */
 
-/* Lobby es oscuro siempre (estética de lobby de juego), sin modo claro. */
+/*
+ * Sistema de diseño Jahuga — ver docs/DESIGN.md ("noche de estadio").
+ * Oscuro siempre, sin modo claro.
+ */
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  /* Acento HeroUI → albirroja (pisa el azul del theme default) */
-  --accent: #e0322c;
-  --accent-foreground: #efede6;
+  --background: #070d1f;
+  --foreground: #eaf0ff;
+  /* Acento HeroUI → volt (pisa el azul del theme default) */
+  --accent: #c8f531;
+  --accent-foreground: #101800;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
+  --font-ui: var(--font-manrope);
   --font-display: var(--font-anton);
 }
 
-/* Paleta "noche de estadio": césped bajo luz artificial, cal de las líneas, albirroja. */
 @theme {
-  --color-night: #0b0e13;
-  --color-chalk: #efede6;
+  --color-night: #070d1f;
+  --color-navy: #0d1830;
+  --color-navy-raised: #15234a;
+  --color-volt: #c8f531;
+  --color-volt-ink: #101800;
+  --color-danger: #e03131;
+  --color-gold: #f5b93b;
+  --color-ice: #eaf0ff;
+  --color-online: #3adc5a;
   --color-pitch: #2e7d4f;
-  --color-albirroja: #e0322c;
-  --color-amber-card: #e8b93b;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-night);
+  color: var(--color-ice);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Fondo del lobby: estadio de noche + overlay de legibilidad (DESIGN.md §4/§8) */
+.bg-stadium {
+  background-color: var(--color-night);
+  background-image:
+    linear-gradient(to bottom, rgb(7 13 31 / 0.55), rgb(7 13 31 / 0.2) 30%, rgb(7 13 31 / 0.92) 88%),
+    url("/assets/jahuga_bg_mobile_penaltys.png");
+  background-size: cover;
+  background-position: center top;
+}
+
+@media (min-width: 768px) {
+  .bg-stadium {
+    background-image:
+      linear-gradient(to bottom, rgb(7 13 31 / 0.5), rgb(7 13 31 / 0.25) 35%, rgb(7 13 31 / 0.9) 90%),
+      url("/assets/jahuga_bg_desktop_penaltys.png");
+  }
+}
+
+/* Fondo de partido de penales */
+.bg-pitch-game {
+  background-color: var(--color-night);
+  background-image:
+    linear-gradient(to bottom, rgb(7 13 31 / 0.72), rgb(7 13 31 / 0.55) 40%, rgb(7 13 31 / 0.9) 90%),
+    url("/assets/jahuga__game_bg_penaltys.png");
+  background-size: cover;
+  background-position: center;
 }

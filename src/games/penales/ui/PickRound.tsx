@@ -41,10 +41,10 @@ export function PickRound({
   return (
     <div className="flex w-full flex-col items-center gap-5">
       <header className="text-center">
-        <p className="text-sm uppercase tracking-widest text-chalk/50">
+        <p className="text-sm uppercase tracking-widest text-ice/50">
           Penal {round} · {playerName}
         </p>
-        <h2 className="font-display text-3xl uppercase text-chalk">
+        <h2 className="font-display text-3xl uppercase text-ice">
           {step === "kick" ? "¿Dónde pateás?" : "¿Dónde te tirás?"}
         </h2>
       </header>
@@ -123,12 +123,12 @@ function OptionToggle({
           onClick={() => onSelect(option.value)}
           className={`min-h-16 rounded-md border px-3 py-2 text-left transition-colors ${
             selected === option.value
-              ? "border-chalk bg-chalk/10"
-              : "border-chalk/20 active:bg-chalk/5"
+              ? "border-ice bg-ice/10"
+              : "border-ice/20 active:bg-ice/5"
           }`}
         >
-          <span className="block font-semibold text-chalk">{option.label}</span>
-          <span className="block text-xs text-chalk/50">{option.hint}</span>
+          <span className="block font-semibold text-ice">{option.label}</span>
+          <span className="block text-xs text-ice/50">{option.hint}</span>
         </button>
       ))}
     </div>

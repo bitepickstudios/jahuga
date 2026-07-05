@@ -161,7 +161,7 @@ export function OnlineMatch({
     body =
       match.opponent_id === meId ? (
         <CenterScreen emoji="⚔️" title={`${name(match.challenger_id)} te retó`}>
-          <p className="text-chalk/60">
+          <p className="text-ice/60">
             Tanda de penales · {match.mode === "live" ? "en vivo" : "cuando puedan"}
           </p>
           <Button variant="primary" size="lg" fullWidth className="min-h-12 max-w-sm" isDisabled={busy} onPress={() => respond(true)}>
@@ -173,20 +173,20 @@ export function OnlineMatch({
         </CenterScreen>
       ) : (
         <CenterScreen emoji="⏳" title={`Esperando a ${name(rivalId)}`}>
-          <p className="text-chalk/60">Le avisamos del reto. Podés cerrar esta pantalla y volver después.</p>
+          <p className="text-ice/60">Le avisamos del reto. Podés cerrar esta pantalla y volver después.</p>
         </CenterScreen>
       );
   } else if (match.status === "declined") {
     body = (
       <CenterScreen emoji="🙅" title="Reto rechazado">
-        <p className="text-chalk/60">{name(rivalId)} no quiso jugar. Otra vez será.</p>
+        <p className="text-ice/60">{name(rivalId)} no quiso jugar. Otra vez será.</p>
         <BackHome />
       </CenterScreen>
     );
   } else if (match.status === "expired" || match.status === "abandoned") {
     body = (
       <CenterScreen emoji="🕰️" title={match.status === "expired" ? "Reto vencido" : "Partida abandonada"}>
-        {match.winner_id && <p className="text-chalk/60">Ganó {name(match.winner_id)} por walkover.</p>}
+        {match.winner_id && <p className="text-ice/60">Ganó {name(match.winner_id)} por walkover.</p>}
         <BackHome />
       </CenterScreen>
     );
@@ -215,7 +215,7 @@ export function OnlineMatch({
         title={match.winner_id === null ? "Empate" : iWon ? "¡Ganaste!" : `Ganó ${name(match.winner_id)}`}
       >
         {match.scores && (
-          <p className="font-display text-6xl text-chalk">
+          <p className="font-display text-6xl text-ice">
             {match.scores[order[0]]} – {match.scores[order[1]]}
           </p>
         )}
@@ -241,7 +241,7 @@ export function OnlineMatch({
   } else {
     body = (
       <CenterScreen emoji="🧠" title={`${name(rivalId)} está pensando`}>
-        <p className="text-chalk/60">
+        <p className="text-ice/60">
           {match.mode === "async"
             ? "Podés cerrar y volver cuando juegue: te va a estar esperando."
             : "En cuanto elija, se revela el penal."}
@@ -252,7 +252,7 @@ export function OnlineMatch({
 
   return (
     <MotionConfig reducedMotion="user">
-      <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center gap-6 px-5 py-8">
+      <main className="bg-pitch-game min-h-dvh"><div className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center gap-6 px-5 py-8">
         {match.status !== "pending" && match.status !== "declined" && (
           <div className="flex w-full flex-col items-center gap-2">
             <Scoreboard
@@ -264,12 +264,13 @@ export function OnlineMatch({
               scores={scores}
             />
             {inSuddenDeath && (
-              <p className="font-display text-lg uppercase tracking-wide text-albirroja">Muerte súbita</p>
+              <p className="font-display text-lg uppercase tracking-wide text-danger">Muerte súbita</p>
             )}
           </div>
         )}
         {body}
-        {error && <p className="text-center text-sm text-albirroja">{error}</p>}
+        {error && <p className="text-center text-sm text-danger">{error}</p>}
+      </div>
       </main>
     </MotionConfig>
   );
@@ -287,7 +288,7 @@ function CenterScreen({
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
       <p className="text-5xl">{emoji}</p>
-      <h2 className="font-display text-3xl uppercase text-chalk">{title}</h2>
+      <h2 className="font-display text-3xl uppercase text-ice">{title}</h2>
       {children}
     </div>
   );
@@ -295,7 +296,7 @@ function CenterScreen({
 
 function BackHome() {
   return (
-    <Link href="/" className="text-sm text-chalk/60 underline underline-offset-4">
+    <Link href="/" className="text-sm text-ice/60 underline underline-offset-4">
       Volver al lobby
     </Link>
   );

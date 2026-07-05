@@ -7,7 +7,7 @@
 
 ## 1. Visión
 
-Lobby es una plataforma social web donde grupos de amigos se enfrentan en minijuegos, acumulan Lobby Coins con su habilidad, construyen su identidad con avatares y skins, y compiten por reputación. La referencia de experiencia es chess.com (retar / jugar / vs máquina / buscar rival) con la identidad visual y el sistema de avatares de un lobby estilo Fortnite.
+Jahuga es una plataforma social web donde grupos de amigos se enfrentan en minijuegos, acumulan Coins con su habilidad, construyen su identidad con avatares y skins, y compiten por reputación. La referencia de experiencia es chess.com (retar / jugar / vs máquina / buscar rival) con la identidad visual y el sistema de avatares de un lobby estilo Fortnite.
 
 **Tesis de producto:** la diversión no está solo en los minijuegos, está en la capa social — el historial contra tu amigo, la racha, la apuesta de coins, la frase icónica en el perfil. La plataforma es el producto; los minijuegos son contenido.
 

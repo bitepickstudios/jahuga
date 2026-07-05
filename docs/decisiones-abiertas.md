@@ -39,3 +39,5 @@ Candidatos: trivia por tiempo (valida Realtime competitivo), boxeo por combinaci
 | 2026-07 | Supabase Realtime, sin servidor de juego dedicado. | Juegos por eventos/turnos; Colyseus recién si hay tiempo real continuo. |
 | 2026-07-03 | Proyecto Supabase diferido a Fase 2 (en Fase 0 solo SDK + clients placeholder). | La Fase 1 no usa base de datos; crear el proyecto hoy es fricción sin validación. |
 | 2026-07-03 | D4: nickname no editable en v1. | Simplicidad y búsqueda social estable; editabilidad con cooldown solo si duele. |
+| 2026-07-04 | Rename: la plataforma se llama **Jahuga** (jahuga.app); la moneda queda como "Coins". | Decisión del fundador; el repo ya se llamaba jahuga. Identidad visual definida en docs/DESIGN.md. |
+| 2026-07-04 | D3 implementada como RLS-como-revelación (ver D3 arriba). | Un solo mecanismo para vivo y async. |
